@@ -2,7 +2,7 @@
   "name": "portfolio-app",
   "homepage": "https://joaosmoreira.github.io/portfolio-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
     "@testing-library/jest-dom": "^5.14.1",
