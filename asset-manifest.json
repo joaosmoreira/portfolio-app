@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/portfolio-app/static/css/main.31a6e60b.css",
-    "main.js": "/portfolio-app/static/js/main.bc9d6761.js",
-    "static/media/frozen.png": "/portfolio-app/static/media/frozen.6124c5d3358c39f4435b.png",
-    "static/media/gitnareia.jpg": "/portfolio-app/static/media/gitnareia.5bad9fcabb1149cf9638.jpg",
-    "static/media/javabank.jpg": "/portfolio-app/static/media/javabank.852f8a34faabc1f27927.jpg",
-    "static/media/logo.png": "/portfolio-app/static/media/logo.c36b293e0127804c35f4.png",
-    "index.html": "/portfolio-app/index.html",
-    "main.31a6e60b.css.map": "/portfolio-app/static/css/main.31a6e60b.css.map",
-    "main.bc9d6761.js.map": "/portfolio-app/static/js/main.bc9d6761.js.map"
+    "main.css": "/static/css/main.31a6e60b.css",
+    "main.js": "/static/js/main.f2832184.js",
+    "static/media/frozen.png": "/static/media/frozen.6124c5d3358c39f4435b.png",
+    "static/media/gitnareia.jpg": "/static/media/gitnareia.5bad9fcabb1149cf9638.jpg",
+    "static/media/javabank.jpg": "/static/media/javabank.852f8a34faabc1f27927.jpg",
+    "static/media/logo.png": "/static/media/logo.c36b293e0127804c35f4.png",
+    "index.html": "/index.html",
+    "main.31a6e60b.css.map": "/static/css/main.31a6e60b.css.map",
+    "main.f2832184.js.map": "/static/js/main.f2832184.js.map"
   },
   "entrypoints": [
     "static/css/main.31a6e60b.css",
-    "static/js/main.bc9d6761.js"
+    "static/js/main.f2832184.js"
   ]
 }
