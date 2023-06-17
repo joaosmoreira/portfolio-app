@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.31a6e60b.css",
-    "main.js": "/static/js/main.d4bd9a68.js",
+    "main.css": "/static/css/main.939a53c3.css",
+    "main.js": "/static/js/main.b2fcabb6.js",
     "static/media/acushla_gold.png": "/static/media/acushla_gold.ac4cd6b2e737ce2c1233.png",
     "static/media/frozen_shop.jpg": "/static/media/frozen_shop.175383885126855192dc.jpg",
     "static/media/gitnareia.jpg": "/static/media/gitnareia.a242e4bd3b8dd2e4d5c4.jpg",
     "static/media/logo.png": "/static/media/logo.c36b293e0127804c35f4.png",
     "static/media/javabank.jpg": "/static/media/javabank.c24db4b06c6a377054c8.jpg",
     "index.html": "/index.html",
-    "main.31a6e60b.css.map": "/static/css/main.31a6e60b.css.map",
-    "main.d4bd9a68.js.map": "/static/js/main.d4bd9a68.js.map"
+    "main.939a53c3.css.map": "/static/css/main.939a53c3.css.map",
+    "main.b2fcabb6.js.map": "/static/js/main.b2fcabb6.js.map"
   },
   "entrypoints": [
-    "static/css/main.31a6e60b.css",
-    "static/js/main.d4bd9a68.js"
+    "static/css/main.939a53c3.css",
+    "static/js/main.b2fcabb6.js"
   ]
 }
