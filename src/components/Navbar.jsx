@@ -12,7 +12,9 @@ const Navbar = () => {
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center px-4 bg-[#011627] text-gray-300">
       <div>
-        <img src={Logo} alt="Logo" style={{ width: "100px" }} />
+        <Link to="home" smooth={true} duration={500}>
+            <img src={Logo} alt="Logo" style={{ width: "100px" }} />
+        </Link>       
       </div>
 
       {/* Menu */}
@@ -124,7 +126,8 @@ const Navbar = () => {
           <li className="w-[160px] h-[60px] flex justify-between items-center ml-[-100px] hover:ml-[-10px] duration-300 bg-slate-800 rounded-br">
             <a
               className="flex justify-between items-center w-full text-gray-300"
-              href="../assets/c-vitae/cv-moreira.pdf"
+              href="https://1drv.ms/b/s!An9HdWnWL1pgkNkBT4GzMkh2HwkrTg?e=T9L092"
+              rel="noreferrer"
             >
               C. Vitae <BsFillPersonLinesFill size={30} />
             </a>

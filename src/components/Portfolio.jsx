@@ -2,7 +2,8 @@
 import React from "react";
 import GitNaAreia from "../assets/projects/gitnareia.jpg";
 import Javabank from "../assets/projects/javabank.jpg";
-import Frozen from "../assets/projects/frozen.png";
+import Frozen from "../assets/projects/frozen_shop.jpg";
+import Acushla from "../assets/projects/acushla_gold.png";
 
 const Portfolio = () => {
   return (
@@ -28,7 +29,7 @@ const Portfolio = () => {
           >
             {/* Hover Effects */}
             <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
+              <span className="text-xl font-bold text-white tracking-wider">
                 #GitNaAreia
               </span>
               <div className="pt-8 text-center">
@@ -52,7 +53,7 @@ const Portfolio = () => {
           >
             {/* Hover Effects */}
             <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
+              <span className="text-xl font-bold text-white tracking-wider">
                 Javabank
               </span>
               <div className="pt-8 text-center">
@@ -76,8 +77,8 @@ const Portfolio = () => {
           >
             {/* Hover Effects */}
             <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
-                React JS Application
+              <span className="text-xl font-bold text-white tracking-wider">
+                Frozen Shop 24h hackathon
               </span>
               <div className="pt-8 text-center">
                 <a
@@ -95,23 +96,22 @@ const Portfolio = () => {
 
           {/* Grid 4 */}
           <div
-            style={{ backgroundImage: `url(${GitNaAreia})` }}
+            style={{ backgroundImage: `url(${Acushla})` }}
             className="shadow-lg shadow-[#040c16] group container rounded-md flex justify-center items-center mx-auto content-div"
           >
             {/* Hover Effects */}
             <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
-                React JS Application
+              <span className="text-xl font-bold text-white tracking-wider">
+                Acushla Gold & Sport
               </span>
               <div className="pt-8 text-center">
-                <a href="/">
+                <a
+                  href="https://www.behance.net/gallery/60633105/Acushla-Organic-Olive-Oil-Gold-Sport-Packaging"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Demo
-                  </button>
-                </a>
-                <a href="/">
-                  <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Code
+                    View
                   </button>
                 </a>
               </div>
@@ -119,54 +119,8 @@ const Portfolio = () => {
           </div>
 
           {/* Grid 5 */}
-          <div
-            style={{ backgroundImage: `url(${Javabank})` }}
-            className="shadow-lg shadow-[#040c16] group container rounded-md flex justify-center items-center mx-auto content-div"
-          >
-            {/* Hover Effects */}
-            <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
-                React JS Application
-              </span>
-              <div className="pt-8 text-center">
-                <a href="/">
-                  <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Demo
-                  </button>
-                </a>
-                <a href="/">
-                  <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Code
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
 
           {/* Grid 6 */}
-          <div
-            style={{ backgroundImage: `url(${Frozen})` }}
-            className="shadow-lg shadow-[#040c16] group container rounded-md flex justify-center items-center mx-auto content-div"
-          >
-            {/* Hover Effects */}
-            <div className="opacity-0 group-hover:opacity-100">
-              <span className="text-2xl font-bold text-white tracking-wider">
-                React JS Application
-              </span>
-              <div className="pt-8 text-center">
-                <a href="/">
-                  <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Demo
-                  </button>
-                </a>
-                <a href="/">
-                  <button className="text-center rounded-lg px-4 py-3 m-2 bg-white text-gray-700 font-bold text-lg">
-                    Code
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
