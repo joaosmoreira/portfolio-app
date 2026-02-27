@@ -1,0 +1,130 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  theme?: "dark" | "light";
+  noPadding?: boolean;
+}
+
+const {
+  title = "João Moreira - Preparador de Obra",
+  description = "Portfólio de João Moreira, Preparador de Obra de Estruturas Metálicas na Garsteel.",
+  theme = "dark",
+  noPadding = false,
+} = Astro.props;
+
+const navLinks = [
+  { href: "/", label: "Início" },
+  { href: "/sobre", label: "Sobre" },
+  { href: "/educacao", label: "Educação" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/fotografia", label: "Fotografia" },
+  { href: "/contactos", label: "Contactos" },
+];
+---
+
+<!DOCTYPE html>
+<html lang="pt-PT" class="bg-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+    <link rel="icon" href="/favicon.svg?v=2" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-white p-5 min-h-screen font-['Inter'] antialiased">
+    <!-- Moldura de 20px exterior -> p-5 na diretiva body -->
+
+    <!-- Wrapper Interno -->
+    <div
+      class={`min-h-[calc(100vh-40px)] rounded-[10px] w-full shadow-xl overflow-hidden flex flex-col relative transition-all duration-300 ring-1 ring-zinc-200 ${
+        theme === "dark"
+          ? "bg-zinc-950 text-zinc-100"
+          : "bg-white text-zinc-900"
+      }`}
+    >
+      <!-- Navegação Global -->
+      <nav
+        class="absolute top-0 w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference text-white"
+      >
+        <a
+          href="/"
+          class="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity"
+          >JM.</a
+        >
+
+        <ul class="hidden md:flex gap-6 text-sm font-medium">
+          {
+            navLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="hover:text-zinc-400 transition-colors uppercase tracking-wider text-xs"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Mobile Menu Triger (optional implementation) -->
+        <button class="md:hidden">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-menu"
+            ><line x1="4" x2="20" y1="12" y2="12"></line><line
+              x1="4"
+              x2="20"
+              y1="6"
+              y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Conteúdo das Páginas -->
+      <main
+        class={`flex-grow flex flex-col overflow-y-auto ${
+          noPadding ? "" : "pt-24 pb-8 px-8 gap-16"
+        }`}
+      >
+        <slot />
+        <Footer theme={theme} paddingX={noPadding} />
+      </main>
+    </div>
+    <style is:global>
+      /* Scrollbar states for the custom scroll area */
+      main::-webkit-scrollbar {
+        width: 8px;
+      }
+      main::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      main::-webkit-scrollbar-thumb {
+        background-color: #3f3f46;
+        border-radius: 20px;
+      }
+    </style>
+  </body>
+</html>
