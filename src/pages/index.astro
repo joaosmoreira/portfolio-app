@@ -1,0 +1,140 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../data/config";
+import { projects } from "../data/projects";
+import { photos } from "../data/photos";
+import ProjectCard from "../components/ProjectCard.astro";
+import PhotoGrid from "../components/PhotoGrid.astro";
+import { ArrowRight } from "lucide-react";
+---
+
+<Layout theme="light" noPadding={true}>
+  <!-- Header Section (100vh, Dark Background) -->
+  <div
+    class="w-full min-h-[calc(100vh-40px)] bg-zinc-950 flex flex-col justify-center px-8 relative"
+  >
+    <div class="max-w-5xl mx-auto w-full py-24">
+      <div
+        class="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000"
+      >
+        <div class="inline-block">
+          <span
+            class="px-4 py-2 rounded-full border border-zinc-700/50 bg-zinc-800/20 text-xs font-mono tracking-widest text-zinc-300 uppercase"
+          >
+            Preparador de Obra
+          </span>
+        </div>
+
+        <h1
+          class="text-5xl md:text-7xl font-bold tracking-tighter text-white leading-[1.1]"
+        >
+          {siteConfig.name}.<br />
+          <span class="text-zinc-500">{siteConfig.role.split("@")[0]}</span>
+          <span class="text-white">@ {siteConfig.role.split("@")[1]}</span>
+        </h1>
+
+        <p class="text-xl text-zinc-400 leading-relaxed max-w-2xl font-light">
+          Após uma década dedicada ao design gráfico, marketing digital e
+          desenvolvimento web, direcionei o meu rumo para as estruturas
+          metálicas. Atualmente na Garsteel, trabalho na preparação de obra e
+          modelação 3D para fabrico e montagem.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-8">
+          <a
+            href="/portfolio"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-zinc-200 transition-colors"
+          >
+            Ver Portfólio de Obra
+            <ArrowRight className="w-5 h-5" />
+          </a>
+          <a
+            href="/contactos"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-zinc-800 text-white font-semibold rounded-lg hover:bg-zinc-700 transition-colors border border-zinc-700"
+          >
+            Entrar em Contacto
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rest of the Page (White Background) -->
+  <div class="flex-grow flex flex-col w-full bg-white px-8 pt-24 pb-8">
+    <!-- Projetos Section -->
+    <div class="w-full">
+      <div class="max-w-5xl mx-auto w-full mb-12">
+        <div class="flex items-center justify-between">
+          <h2 class="text-3xl font-bold text-zinc-900 tracking-tight">
+            Trabalho Recente
+          </h2>
+          <a
+            href="/portfolio"
+            class="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors flex items-center gap-2"
+          >
+            Ver Todos <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="max-w-5xl mx-auto w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24"
+      >
+        {
+          projects
+            .slice(0, 3)
+            .map((project) => (
+              <ProjectCard
+                title={project.title}
+                client={project.client}
+                description={project.description}
+                tags={project.tags}
+                image={project.image}
+                theme="light"
+              />
+            ))
+        }
+      </div>
+    </div>
+
+    <!-- Fotos Grid Section -->
+    <div class="w-full max-w-5xl mx-auto border-t border-zinc-200 pt-24 pb-0">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-3xl font-bold text-zinc-900 tracking-tight">
+          Fotografia
+        </h2>
+        <a
+          href="/fotografia"
+          class="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors flex items-center gap-2"
+        >
+          Galeria Completa <ArrowRight className="w-4 h-4" />
+        </a>
+      </div>
+      <!-- 2 col mobile, 3 tablet, 4 desktop, 0 gaps, bounded width -->
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0 rounded-xl overflow-hidden border border-zinc-200 shadow-sm"
+      >
+        {
+          photos.slice(0, 16).map((photo) => (
+            <a
+              href={`/fotografia/${photo.id}`}
+              class="block relative group aspect-square overflow-hidden bg-zinc-100 border-[0.5px] border-zinc-200"
+            >
+              <img
+                src={photo.image}
+                alt={photo.alt}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-center justify-center">
+                <span class="text-white font-medium text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  {photo.title}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</Layout>

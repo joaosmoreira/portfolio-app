@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { projects } from "../data/projects";
+import ProjectCard from "../components/ProjectCard.astro";
+---
+
+<Layout title="Portfolio | João Moreira" theme="light">
+  <div class="max-w-6xl mx-auto w-full">
+    <header class="mb-16 max-w-2xl">
+      <h1 class="text-4xl font-bold tracking-tighter text-zinc-900 mb-4">
+        Portfolio
+      </h1>
+      <p class="text-xl text-zinc-600 font-light">
+        Uma seleção de trabalhos em engenharia, programação e design gráfico.
+      </p>
+    </header>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        projects.map((project) => (
+          <ProjectCard
+            title={project.title}
+            client={project.client}
+            description={project.description}
+            tags={project.tags}
+            image={project.image}
+            theme="light"
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>

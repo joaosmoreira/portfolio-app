@@ -1,0 +1,9 @@
+# Portfólio Garsteel
+- [ ] Inicializar projeto Astro
+- [ ] Configurar Tailwind CSS
+- [ ] Configurar Lucide Icons e EmailJS
+- [ ] Criar ficheiro de configuração (src/data/config.ts)
+- [ ] Criar Layout.astro (moldura branca, fundo escuro)
+- [ ] Criar componentes (ProjectCard, EducationItem, PhotoGrid)
+- [ ] Criar páginas (Home, Sobre, Educação, Portfólio, Fotografia, Contactos)
+- [ ] Afinar design (Estilo Hive/Minimalista, hover effects, cores)

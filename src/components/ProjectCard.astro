@@ -1,0 +1,85 @@
+---
+interface Props {
+  title: string;
+  client: string;
+  description: string;
+  tags: string[];
+  image: string;
+  theme?: "dark" | "light";
+}
+
+const { title, client, description, tags, image, theme = "dark" } = Astro.props;
+import { ArrowUpRight } from "lucide-react";
+---
+
+<article
+  class={`group relative flex flex-col overflow-hidden rounded-xl border transition-all ${
+    theme === "dark"
+      ? "bg-zinc-900 border-zinc-800 hover:border-zinc-700"
+      : "bg-white border-zinc-200 hover:border-zinc-300 shadow-sm"
+  }`}
+>
+  <div class="relative h-64 w-full overflow-hidden bg-zinc-800">
+    <!-- Image with hover effects (scale, blur, overlay) -->
+    <img
+      src={image}
+      alt={title}
+      class="h-full w-full object-cover transition-all duration-700 ease-in-out group-hover:scale-110 group-hover:blur-[2px]"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100 flex items-center justify-center"
+    >
+      <div
+        class="translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 bg-white/10 backdrop-blur-md p-3 rounded-full"
+      >
+        <ArrowUpRight className="text-white w-6 h-6" />
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col flex-grow p-6">
+    <div class="flex justify-between items-start mb-4">
+      <div>
+        <h3
+          class={`text-xl font-bold ${
+            theme === "dark" ? "text-zinc-100" : "text-zinc-900"
+          }`}
+        >
+          {title}
+        </h3>
+        <p
+          class={`text-sm font-medium mt-1 ${
+            theme === "dark" ? "text-zinc-400" : "text-zinc-500"
+          }`}
+        >
+          {client}
+        </p>
+      </div>
+    </div>
+
+    <p
+      class={`text-sm mb-6 flex-grow leading-relaxed ${
+        theme === "dark" ? "text-zinc-300" : "text-zinc-600"
+      }`}
+    >
+      {description}
+    </p>
+
+    <div class="flex flex-wrap gap-2 mt-auto">
+      {
+        tags.map((tag) => (
+          <span
+            class={`px-3 py-1 text-xs font-semibold rounded-full border ${
+              theme === "dark"
+                ? "bg-zinc-800 text-zinc-300 border-zinc-700"
+                : "bg-zinc-100 text-zinc-600 border-zinc-200"
+            }`}
+          >
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</article>
