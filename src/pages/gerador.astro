@@ -552,13 +552,15 @@ import Layout from "../layouts/Layout.astro";
                 aiBtn.disabled = true;
                 aiBtnLabel.textContent = "A gerar...";
 
+                const locationField =
+                    document.getElementById("f-location").value;
                 const meta = {
                     camera: document.getElementById("f-camera").value,
                     lens: document.getElementById("f-lens").value,
                     aperture: document.getElementById("f-aperture").value,
                     shutter: document.getElementById("f-shutter").value,
                     iso: document.getElementById("f-iso").value,
-                    location: document.getElementById("f-location").value,
+                    location: locationField, // Contains GPS now if EXIF had it
                     date: document.getElementById("f-date").value,
                 };
 
@@ -583,6 +585,9 @@ import Layout from "../layouts/Layout.astro";
         4. O "image_path" TEM de ser: /images/[category]/[Nome original do ficheiro]
         5. As "tags" DEVERÃO usar SEMPRE variantes da lista permitida e apenas coisas diretas. Se a foto for a preto e branco, tens a obrigatoriedade de incluir a tag "monocromático".
 
+        INSTRUÇÕES PARA A LOCALIZAÇÃO (LOCATION):
+        Analisa o campo "location" nos metadados enviados. Se contiver coordenadas de GPS (Latitude/Longitude), descobre a que cidade e país correspondem (ex: "Porto, Portugal", "Santo Tirso, Portugal"). Se não houver coordenadas, ou se não as reconheceres, devolve APENAS a palavra estrita "Portugal".
+
         Devolve APENAS um objeto JSON válido, sem blocos markdown (\`\`\`json), EXATAMENTE com estas propriedades:
         {
           "id": "A tua tag principal gerada - numeros do ficheiro",
@@ -590,6 +595,7 @@ import Layout from "../layouts/Layout.astro";
           "title": "Um título curto e impactante (1-3 palavras).",
           "description": "Uma descrição envolvente e ligeiramente poética da fotografia (1-2 frases). Não fales do equipamento, foca na luz e atmosfera.",
           "alt": "Descrição simples e direta da imagem para ser lida por leitores de ecrã.",
+          "location": "A cidade e o país (ex: Porto, Portugal), ou apenas Portugal. Usa a tua conversão de GPS se o Metadata fornecer.",
           "tags": ["array", "de", "tags", "estritas", "incluindo", "a", "categoria", "escolhida"]
         }`;
 
@@ -921,6 +927,14 @@ import Layout from "../layouts/Layout.astro";
                         } ${dt.getFullYear()}`;
                         found = true;
                     }
+                }
+
+                // Check for GPS coordinates to give hint to AI
+                if (exif.latitude != null && exif.longitude != null) {
+                    v(
+                        "f-location"
+                    ).value = `${exif.latitude}, ${exif.longitude}`;
+                    found = true;
                 }
 
                 return found;
