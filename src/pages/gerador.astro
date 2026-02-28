@@ -614,10 +614,19 @@ import Layout from "../layouts/Layout.astro";
                     const data = await res.json();
                     const text =
                         data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                    const cleanText = text
+                    let cleanText = text
                         .replace(/```json\n?|```\n?/g, "")
                         .trim();
-                    const parsed = JSON.parse(cleanText);
+                    let parsed;
+
+                    try {
+                        parsed = JSON.parse(cleanText);
+                    } catch (parseErr) {
+                        console.warn("JSON Parse Failed. Raw text was:", text);
+                        throw new Error(
+                            "A resposta da IA não é um JSON válido."
+                        );
+                    }
 
                     if (parsed.title)
                         document.getElementById("f-title").value = parsed.title;
@@ -895,9 +904,12 @@ import Layout from "../layouts/Layout.astro";
                 ).value = `/images/${file.name}`;
 
                 const imgType =
-                    file.type === "image/jpeg" ? "image/jpeg" : "image/png";
-                currentImageType =
-                    imgType === "image/jpeg" ? "image/jpeg" : "image/png";
+                    file.type === "image/jpeg" ||
+                    file.type === "image/png" ||
+                    file.type === "image/webp"
+                        ? file.type
+                        : "image/jpeg";
+                currentImageType = imgType;
                 const bitmap = await createImageBitmap(file);
                 const MAX = 1500;
                 const scale = Math.min(
@@ -923,10 +935,9 @@ import Layout from "../layouts/Layout.astro";
                 try {
                     const buffer = await file.arrayBuffer();
                     let exif = null;
-                    // Note: using window.exifr from CDN
                     if (window.exifr) {
                         try {
-                            exif = await exifr.parse(buffer, {
+                            exif = await window.exifr.parse(buffer, {
                                 tiff: true,
                                 exif: true,
                                 gps: true,
@@ -941,6 +952,22 @@ import Layout from "../layouts/Layout.astro";
                             });
                         } catch (e1) {
                             console.warn("parse default attempt failed:", e1);
+                        }
+
+                        // Fallbacks exactly like original HTML
+                        if (!exif) {
+                            try {
+                                exif = await window.exifr.parse(buffer);
+                            } catch (e2) {
+                                console.warn("attempt 2 fallback:", e2);
+                            }
+                        }
+                        if (!exif) {
+                            try {
+                                exif = await window.exifr.parse(file);
+                            } catch (e3) {
+                                console.warn("attempt 3 fallback:", e3);
+                            }
                         }
                     } else {
                         console.error("EXIFR module not injected yet.");
