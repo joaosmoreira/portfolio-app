@@ -757,7 +757,7 @@ import Layout from "../layouts/Layout.astro";
             });
 
             // EXIF Parsing Formatter
-            function fillExif(exif) {
+            async function fillExif(exif) {
                 if (!exif) return false;
 
                 debugPre.textContent = JSON.stringify(
@@ -930,11 +930,26 @@ import Layout from "../layouts/Layout.astro";
                     }
                 }
 
-                // Check for GPS coordinates to give hint to AI
+                // Reverse Geocoding instead of depending on AI
                 if (exif.latitude != null && exif.longitude != null) {
-                    v(
-                        "f-location"
-                    ).value = `${exif.latitude}, ${exif.longitude}`;
+                    v("f-location").value = "A localizar...";
+                    try {
+                        const geo = await fetch(
+                            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${exif.latitude}&longitude=${exif.longitude}&localityLanguage=pt`
+                        );
+                        const geoData = await geo.json();
+                        const city =
+                            geoData.city ||
+                            geoData.locality ||
+                            geoData.principalSubdivision ||
+                            "";
+                        const country = geoData.countryName || "Portugal";
+                        v("f-location").value = city
+                            ? `${city}, ${country}`
+                            : country;
+                    } catch (e) {
+                        v("f-location").value = "Portugal";
+                    }
                     found = true;
                 }
 
@@ -1027,7 +1042,7 @@ import Layout from "../layouts/Layout.astro";
                         console.error("EXIFR module not injected yet.");
                     }
 
-                    const found = fillExif(exif);
+                    const found = await fillExif(exif);
 
                     if (found) {
                         exifBadge.textContent = "✓ EXIF lido";
