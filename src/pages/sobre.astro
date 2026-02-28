@@ -82,7 +82,7 @@ const olderEducation = education.slice(3);
         <h2 class="text-2xl font-bold text-zinc-900 tracking-tight m-0">
           Educação
         </h2>
-        <div class="space-y-0">
+        <div class="columns-1 md:columns-2 md:gap-x-12">
           {
             [...recentEducation, ...olderEducation].map((item) => (
               <EducationItem
