@@ -583,7 +583,11 @@ import Layout from "../layouts/Layout.astro";
         2. Analisa o 'Nome original do ficheiro'. Extrai apenas os números (ex: se for IMG_1212.jpg ou FFPS-0110.jpg, os números são 1212 ou 0110). Se não houver números, gera 4 aleatórios.
         3. O "id" TEM de ser: [category]-[numeros_do_ficheiro]. Exemplo final: pessoas-1212 ou desporto-0110.
         4. O "image_path" TEM de ser: /images/[category]/[Nome original do ficheiro]
-        5. As "tags" DEVERÃO usar SEMPRE variantes da lista permitida e apenas coisas diretas. Se a foto for a preto e branco, tens a obrigatoriedade de incluir a tag "monocromático".
+        5. As "tags" têm as seguintes regras DIRETIVAS DE ESTRUTURA:
+           - Têm de ser EXATAMENTE 4 tags (nem mais, nem menos).
+           - A primeira tag TEM de ser a "category" principal que escolheste.
+           - A última tag (4ª) TEM de ser "monocromático" se a foto for a preto e branco. Se for a cores, escolhe outra tag relevante para a 4ª posição para perfazer as 4.
+           - Usa SEMPRE variantes da lista permitida (animais, pessoas, desporto, quotidiano, arquitetura, betao, natureza).
 
         INSTRUÇÕES PARA A LOCALIZAÇÃO (LOCATION):
         Analisa o campo "location" enviado nos metadados. Se ele contiver coordenadas GPS (Latitude e Longitude em números), a tua tarefa OBRIGATÓRIA é atuar como um Geocoder: descobre qual é a cidade e país reais dessas coordenadas e escreve APENAS o resultado (ex: "Porto, Portugal" ou "Aves, Portugal"). 
@@ -597,7 +601,7 @@ import Layout from "../layouts/Layout.astro";
           "description": "Uma descrição envolvente e ligeiramente poética da fotografia (1-2 frases). Não fales do equipamento, foca na luz e atmosfera.",
           "alt": "Descrição simples e direta da imagem para ser lida por leitores de ecrã.",
           "location": "Nome da Cidade e País (ex: Santo Tirso, Portugal). Nunca uses números ou coordenadas aqui.",
-          "tags": ["array", "de", "tags", "estritas", "incluindo", "a", "categoria", "escolhida"]
+          "tags": ["Array EXATAMENE com 4 elementos", "Sempre categoria primeiro", "elementos limpos", "monocromático se for P&B"]
         }`;
 
                 try {
