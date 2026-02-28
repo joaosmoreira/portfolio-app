@@ -1,0 +1,1112 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Gerador EXIF | João Moreira" theme="dark">
+    <div class="max-w-5xl mx-auto w-full font-['Syne']">
+        <header
+            class="mb-12 border-b border-zinc-800 pb-8 flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8"
+        >
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mb-0">
+                EXIF <span class="text-[#e8ff47]">→</span> TS
+            </h1>
+            <span
+                class="font-mono text-xs text-zinc-500 uppercase tracking-widest flex items-center gap-2"
+            >
+                <span
+                    class="w-1.5 h-1.5 rounded-full bg-zinc-500 inline-block transition-all duration-300"
+                    id="status-dot"></span>
+                Extrator de metadados rápidos
+            </span>
+        </header>
+
+        <!-- Key Config Section -->
+        <div
+            class="mb-8 p-4 border border-zinc-800 rounded bg-[#111113] flex flex-col md:flex-row items-center justify-between gap-4"
+            id="api-key-section"
+        >
+            <div class="flex-1">
+                <label
+                    class="block font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-2"
+                    >Gemini API Key (Local Storage)</label
+                >
+                <div class="flex gap-2">
+                    <input
+                        type="password"
+                        id="api-key-input"
+                        placeholder="AIzaSy..."
+                        class="bg-[#0d0d10] border border-zinc-800 text-white font-mono text-xs px-3 py-2 w-full max-w-md focus:outline-none focus:border-[#e8ff47] transition-colors"
+                    />
+                    <button
+                        id="save-key-btn"
+                        class="bg-zinc-800 hover:bg-zinc-700 text-white font-mono text-xs px-4 py-2 uppercase tracking-wide transition-colors"
+                        >Guardar</button
+                    >
+                </div>
+            </div>
+            <div class="text-xs text-zinc-500 max-w-sm md:text-right">
+                A chave é guardada apenas no teu browser para gerar dados com
+                inteligência artificial.
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[600px]">
+            <!-- Drop Zone -->
+            <div class="flex flex-col gap-4">
+                <div
+                    class="border-[1.5px] border-dashed border-zinc-800 rounded-sm p-12 flex flex-col items-center justify-center gap-6 cursor-pointer hover:border-[#e8ff47] transition-all min-h-[380px] relative overflow-hidden group"
+                    id="drop-zone"
+                >
+                    <div
+                        class="w-14 h-14 border-[1.5px] border-zinc-800 rounded-full flex items-center justify-center text-zinc-500 group-hover:border-[#e8ff47] group-hover:text-[#e8ff47] transition-all"
+                        id="drop-icon"
+                    >
+                        <svg
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        >
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                            ></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="text-center" id="drop-text">
+                        <strong
+                            class="block text-lg font-semibold mb-1.5 text-white"
+                            >Arrasta a foto aqui</strong
+                        >
+                        <span
+                            class="font-mono text-[11px] text-zinc-500 tracking-wider hidden sm:block"
+                            >ou clica para selecionar · JPG, HEIC, PNG</span
+                        >
+                    </div>
+
+                    <img
+                        id="preview"
+                        alt="preview"
+                        class="w-full h-full object-cover hidden absolute inset-0 rounded-sm"
+                    />
+
+                    <div
+                        class="absolute top-4 left-4 bg-zinc-950/85 border border-zinc-800 text-[#e8ff47] font-mono text-[10px] px-2.5 py-1 tracking-widest uppercase backdrop-blur-md hidden"
+                        id="exif-badge"
+                    >
+                        ✓ EXIF lido
+                    </div>
+                    <button
+                        class="absolute bottom-4 right-4 bg-zinc-950/85 border border-zinc-800 text-white font-mono text-[10px] px-3 py-1.5 uppercase tracking-widest hidden hover:border-[#e8ff47] hover:text-[#e8ff47] backdrop-blur-md transition-colors"
+                        id="change-btn"
+                    >
+                        Trocar foto
+                    </button>
+                </div>
+                <input
+                    type="file"
+                    id="file-input"
+                    accept="image/*"
+                    class="hidden"
+                />
+            </div>
+
+            <!-- Fields Panel -->
+            <div class="flex flex-col gap-0" id="fields-panel">
+                <h2
+                    class="font-mono text-[10px] tracking-[0.15em] uppercase text-zinc-500 mb-6"
+                >
+                    Preenche / edita os campos
+                </h2>
+
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >ID</label
+                        >
+                        <input
+                            type="text"
+                            id="f-id"
+                            placeholder="quotidiano-0001"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Título</label
+                        >
+                        <input
+                            type="text"
+                            id="f-title"
+                            placeholder="Concreto"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Caminho da imagem</label
+                        >
+                        <input
+                            type="text"
+                            id="f-image"
+                            placeholder="/images/quotidiano/img.jpg"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Alt text</label
+                        >
+                        <input
+                            type="text"
+                            id="f-alt"
+                            placeholder="Descrição estrutural da foto"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Descrição</label
+                        >
+                        <textarea
+                            id="f-description"
+                            placeholder="Uma breve descrição da fotografia..."
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full min-h-[60px] resize-none placeholder-zinc-700 leading-relaxed"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500 mb-1"
+                            >Tags</label
+                        >
+                        <div
+                            class="flex flex-wrap gap-1.5 items-center"
+                            id="tags-wrap"
+                        >
+                            <input
+                                type="text"
+                                id="tags-input"
+                                placeholder="Escreve e prime Enter..."
+                                class="bg-transparent border-none outline-none text-white font-mono text-sm min-w-[120px] flex-1 placeholder-zinc-700"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Metadata -->
+                <h2
+                    class="font-mono text-[10px] tracking-[0.15em] uppercase text-[#e8ff47] mt-4 mb-2"
+                >
+                    Technical Info
+                </h2>
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Date</label
+                        >
+                        <input
+                            type="text"
+                            id="f-date"
+                            placeholder="13 Fev 2026"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Location</label
+                        >
+                        <input
+                            type="text"
+                            id="f-location"
+                            placeholder="Porto, Portugal"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Camera</label
+                        >
+                        <input
+                            type="text"
+                            id="f-camera"
+                            placeholder="iPhone 17 Pro"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Lens</label
+                        >
+                        <input
+                            type="text"
+                            id="f-lens"
+                            placeholder="24mm f/1.8"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Aperture</label
+                        >
+                        <input
+                            type="text"
+                            id="f-aperture"
+                            placeholder="f/1.8"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Shutter Speed</label
+                        >
+                        <input
+                            type="text"
+                            id="f-shutter"
+                            placeholder="1/250s"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="grid grid-cols-2 border border-zinc-800 rounded-sm overflow-hidden mb-[1px]"
+                >
+                    <div
+                        class="flex flex-col gap-1 p-3 border-r border-zinc-800 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >ISO</label
+                        >
+                        <input
+                            type="text"
+                            id="f-iso"
+                            placeholder="100"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                    <div
+                        class="flex flex-col gap-1 p-3 bg-[#111113] hover:bg-[#161618] transition-colors"
+                    >
+                        <label
+                            class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                            >Focal Length</label
+                        >
+                        <input
+                            type="text"
+                            id="f-focal"
+                            placeholder="26mm"
+                            class="bg-transparent border-none outline-none text-white font-mono text-sm w-full placeholder-zinc-700"
+                        />
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-wrap gap-4 items-center">
+                    <button
+                        id="ai-btn"
+                        disabled
+                        class="bg-transparent border-[1.5px] border-[#e8ff47]/35 text-[#e8ff47] font-semibold text-[13px] tracking-wide px-5 py-3 hover:bg-[#e8ff47]/10 hover:border-[#e8ff47] transition-all disabled:opacity-35 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            ><path d="M12 2a10 10 0 1 0 10 10"></path><path
+                                d="M12 6v6l4 2"></path><circle
+                                cx="18"
+                                cy="6"
+                                r="3"
+                                fill="currentColor"
+                                stroke="none"></circle>
+                        </svg>
+                        <span id="ai-btn-label">Gerar com IA</span>
+                    </button>
+
+                    <button
+                        id="generate-btn"
+                        class="bg-[#e8ff47] text-black font-bold text-sm tracking-wide uppercase px-8 py-3 hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(232,255,71,0.2)] transition-all flex-1"
+                    >
+                        Gerar TypeScript
+                    </button>
+
+                    <button
+                        id="clear-btn"
+                        class="bg-transparent border border-zinc-800 text-zinc-500 font-mono text-xs px-5 py-3 uppercase tracking-widest hover:border-[#ff6b35] hover:text-[#ff6b35] transition-colors"
+                    >
+                        Limpar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="output-section" class="mt-8 hidden w-full">
+            <div class="flex items-center justify-between mb-3">
+                <span
+                    class="font-mono text-[10px] tracking-widest uppercase text-zinc-500"
+                    >Output TypeScript</span
+                >
+                <button
+                    id="copy-btn"
+                    class="bg-transparent border border-zinc-800 text-white font-mono text-[10px] px-3 py-1.5 uppercase tracking-widest hover:border-[#e8ff47] hover:text-[#e8ff47] transition-colors flex items-center gap-2"
+                >
+                    <svg
+                        width="13"
+                        height="13"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                        <path
+                            d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                        ></path>
+                    </svg>
+                    Copiar
+                </button>
+            </div>
+            <pre
+                id="output-pre"
+                class="bg-[#0d0d10] border border-zinc-800 p-6 overflow-x-auto font-mono text-xs leading-relaxed text-[#d4d4d8] rounded-sm">
+            </pre>
+        </div>
+
+        <!-- Debug Panel -->
+        <div id="debug-panel" class="mt-4 hidden w-full">
+            <div class="flex items-center justify-between mb-2">
+                <span
+                    class="font-mono text-[10px] tracking-[0.15em] uppercase text-[#ff6b35]"
+                    >⚠ Dados raw extraídos (debug)</span
+                >
+                <button
+                    id="debug-toggle"
+                    class="bg-transparent border border-zinc-800 text-zinc-500 font-mono text-[10px] px-2 py-1 uppercase tracking-widest hover:border-[#ff6b35] hover:text-[#ff6b35] transition-colors"
+                >
+                    Mostrar ▾
+                </button>
+            </div>
+            <div id="debug-content" class="hidden">
+                <pre
+                    id="debug-pre"
+                    class="bg-[#08080a] border border-[#2a1a10] text-[11px] max-h-[300px] overflow-y-auto p-4 font-mono text-zinc-400">
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Grain overlay scoped to layout */
+        .grain-overlay::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.4;
+        }
+
+        .status-dot.active {
+            background: #e8ff47;
+            box-shadow: 0 0 8px #e8ff47;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.cjs" is:inline
+    ></script>
+
+    <script is:inline>
+        (function initEXIFTool() {
+            // Configuration
+            let currentImageBase64 = null;
+            let currentImageType = null;
+            let tags = [];
+
+            // Elements
+            const apiKeyInput = document.getElementById("api-key-input");
+            const saveKeyBtn = document.getElementById("save-key-btn");
+            const dropZone = document.getElementById("drop-zone");
+            const fileInput = document.getElementById("file-input");
+            const preview = document.getElementById("preview");
+            const dropIcon = document.getElementById("drop-icon");
+            const dropText = document.getElementById("drop-text");
+            const changeBtn = document.getElementById("change-btn");
+            const exifBadge = document.getElementById("exif-badge");
+            const statusDot = document.getElementById("status-dot");
+
+            const tagsWrap = document.getElementById("tags-wrap");
+            const tagsInput = document.getElementById("tags-input");
+
+            const aiBtn = document.getElementById("ai-btn");
+            const aiBtnLabel = document.getElementById("ai-btn-label");
+            const generateBtn = document.getElementById("generate-btn");
+            const clearBtn = document.getElementById("clear-btn");
+            const copyBtn = document.getElementById("copy-btn");
+            const outputSection = document.getElementById("output-section");
+            const outputPre = document.getElementById("output-pre");
+
+            const debugPanel = document.getElementById("debug-panel");
+            const debugContent = document.getElementById("debug-content");
+            const debugPre = document.getElementById("debug-pre");
+            const debugToggle = document.getElementById("debug-toggle");
+
+            // Setup API Key
+            const savedKey = localStorage.getItem("gemini_api_key");
+            if (savedKey) apiKeyInput.value = savedKey;
+
+            saveKeyBtn.addEventListener("click", () => {
+                const key = apiKeyInput.value.trim();
+                if (key) {
+                    localStorage.setItem("gemini_api_key", key);
+                    saveKeyBtn.textContent = "Guardado";
+                    setTimeout(
+                        () => (saveKeyBtn.textContent = "Guardar"),
+                        2000
+                    );
+                }
+            });
+
+            // AI Generation
+            aiBtn.addEventListener("click", async () => {
+                const apiKey = localStorage.getItem("gemini_api_key");
+                if (!apiKey) {
+                    alert(
+                        "Por favor insere e guarda a tua Google Gemini API Key primeiro."
+                    );
+                    apiKeyInput.focus();
+                    return;
+                }
+
+                if (!currentImageBase64) return;
+
+                aiBtn.disabled = true;
+                aiBtnLabel.textContent = "A gerar...";
+
+                const meta = {
+                    camera: document.getElementById("f-camera").value,
+                    lens: document.getElementById("f-lens").value,
+                    aperture: document.getElementById("f-aperture").value,
+                    shutter: document.getElementById("f-shutter").value,
+                    iso: document.getElementById("f-iso").value,
+                    location: document.getElementById("f-location").value,
+                    date: document.getElementById("f-date").value,
+                };
+
+                const promptText = `Age como um assistente profissional para o portfolio de um fotógrafo. Analisa esta fotografia e os seus metadados para preencher detalhes técnicos em português. 
+
+        Metadados técnicos atuais extraídos (ignora se estiverem em branco ou duplicados):
+        ${Object.entries(meta)
+            .filter(([, v]) => v)
+            .map(([k, v]) => `- ${k}: ${v}`)
+            .join("\n")}
+
+        Devolve APENAS um objeto JSON válido, perfeitamente formatado, sem blocos de código markdown (\`\`\`json), contendo EXATAMENTE estas propriedades:
+        {
+          "title": "Um título curto, impactante e evocativo (1-3 palavras).",
+          "description": "Uma descrição envolvente e ligeiramente poética da fotografia (1-2 frases). Não fales do equipamento, foca na atmosfera, sentimento ou arquitetura/luz.",
+          "alt": "Descrição simples e direta da imagem para ser lida por leitores de ecrã (acessibilidade).",
+          "tags": ["array", "de", "3-4", "tags", "relevantes"]
+        }`;
+
+                try {
+                    const res = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                contents: [
+                                    {
+                                        parts: [
+                                            { text: promptText },
+                                            {
+                                                inlineData: {
+                                                    mimeType: currentImageType,
+                                                    data: currentImageBase64,
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
+                                generationConfig: {
+                                    temperature: 0.7,
+                                    responseMimeType: "application/json",
+                                },
+                            }),
+                        }
+                    );
+
+                    if (!res.ok)
+                        throw new Error(
+                            "Falha ao comunicar com a API do Gemini"
+                        );
+
+                    const data = await res.json();
+                    const text =
+                        data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                    const cleanText = text
+                        .replace(/```json\n?|```\n?/g, "")
+                        .trim();
+                    const parsed = JSON.parse(cleanText);
+
+                    if (parsed.title)
+                        document.getElementById("f-title").value = parsed.title;
+                    if (parsed.description)
+                        document.getElementById("f-description").value =
+                            parsed.description;
+                    if (parsed.alt)
+                        document.getElementById("f-alt").value = parsed.alt;
+                    if (Array.isArray(parsed.tags)) {
+                        tags = parsed.tags;
+                        renderTags();
+                    }
+
+                    aiBtnLabel.textContent = "✓ Gerado!";
+                    setTimeout(() => {
+                        aiBtnLabel.textContent = "Gerar com IA";
+                        aiBtn.disabled = false;
+                    }, 2000);
+                } catch (err) {
+                    console.error("AI error:", err);
+                    aiBtnLabel.textContent = "✗ Erro";
+                    alert(
+                        "Erro ao gerar com AI. Vê a consola ou verifica a tua API Key."
+                    );
+                    setTimeout(() => {
+                        aiBtnLabel.textContent = "Gerar com IA";
+                        aiBtn.disabled = false;
+                    }, 3000);
+                }
+            });
+
+            // Tags Logic
+            function addTag(t) {
+                if (!t || tags.includes(t)) return;
+                tags.push(t);
+                renderTags();
+            }
+
+            function removeTag(t) {
+                tags = tags.filter((x) => x !== t);
+                renderTags();
+            }
+
+            function renderTags() {
+                tagsWrap.innerHTML = "";
+                tags.forEach((t) => {
+                    const chip = document.createElement("div");
+                    chip.className =
+                        "bg-[#e8ff47]/10 text-[#e8ff47] border border-[#e8ff47]/25 rounded-sm font-mono text-[11px] px-2 py-1 flex items-center gap-1.5";
+                    chip.innerHTML = `${t}<button type="button" class="text-[#e8ff47] opacity-60 hover:opacity-100 transition-opacity" title="Remover">×</button>`;
+                    chip.querySelector("button").onclick = () => removeTag(t);
+                    tagsWrap.appendChild(chip);
+                });
+                tagsWrap.appendChild(tagsInput);
+            }
+
+            tagsInput.addEventListener("keydown", (e) => {
+                if (
+                    (e.key === "Enter" || e.key === ",") &&
+                    tagsInput.value.trim()
+                ) {
+                    e.preventDefault();
+                    addTag(tagsInput.value.trim().replace(/,$/, ""));
+                    tagsInput.value = "";
+                } else if (
+                    e.key === "Backspace" &&
+                    !tagsInput.value &&
+                    tags.length
+                ) {
+                    removeTag(tags[tags.length - 1]);
+                }
+            });
+
+            // Drag and Drop Logic
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.classList.add("border-[#e8ff47]", "bg-[#e8ff47]/5");
+            });
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.classList.remove("border-[#e8ff47]", "bg-[#e8ff47]/5");
+            });
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("border-[#e8ff47]", "bg-[#e8ff47]/5");
+                handleFile(e.dataTransfer.files[0]);
+            });
+            dropZone.addEventListener("click", (e) => {
+                if (!e.target.closest("#change-btn")) fileInput.click();
+            });
+            changeBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+            fileInput.addEventListener("change", (e) => {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+
+            debugToggle.addEventListener("click", () => {
+                const open = debugContent.classList.toggle("hidden");
+                debugToggle.textContent = open ? "Mostrar ▾" : "Ocultar ▴";
+            });
+
+            // EXIF Parsing Formatter
+            function fillExif(exif) {
+                if (!exif) return false;
+
+                debugPre.textContent = JSON.stringify(
+                    exif,
+                    (k, v) => {
+                        if (v instanceof Uint8Array || v instanceof ArrayBuffer)
+                            return `[binary ${v.byteLength || v.length} bytes]`;
+                        return v;
+                    },
+                    2
+                );
+                debugPanel.classList.remove("hidden");
+
+                let found = false;
+
+                // Clean values
+                const v = (id) => document.getElementById(id);
+
+                const make = exif.Make || exif.make || "";
+                const model = exif.Model || exif.model || "";
+                if (model) {
+                    v("f-camera").value = [make, model]
+                        .filter(Boolean)
+                        .join(" ")
+                        .trim();
+                    found = true;
+                }
+
+                const lensModel =
+                    exif.LensModel ||
+                    exif.lensModel ||
+                    exif.Lens ||
+                    exif.lens ||
+                    "";
+                const fl35 =
+                    exif.FocalLengthIn35mmFormat ||
+                    exif.FocalLengthIn35mmFilm ||
+                    exif.focalLengthIn35mmFormat;
+                if (lensModel) {
+                    v("f-lens").value = lensModel;
+                    found = true;
+                } else if (fl35) {
+                    const fn2 =
+                        exif.FNumber || exif.fNumber || exif.ApertureValue;
+                    const fnStr = fn2
+                        ? ` f/${parseFloat(fn2).toFixed(1).replace(/\.0$/, "")}`
+                        : "";
+                    v("f-lens").value = `${Math.round(
+                        parseFloat(fl35)
+                    )}mm${fnStr}`;
+                    found = true;
+                }
+
+                const fn = exif.FNumber || exif.fNumber || exif.ApertureValue;
+                if (fn) {
+                    const rounded = parseFloat(fn);
+                    const fStops = [
+                        1.0, 1.1, 1.2, 1.4, 1.6, 1.7, 1.8, 2.0, 2.2, 2.4, 2.5,
+                        2.8, 3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10,
+                        11, 13, 14, 16, 18, 20, 22,
+                    ];
+                    const nearest = fStops.reduce((a, b) =>
+                        Math.abs(b - rounded) < Math.abs(a - rounded) ? b : a
+                    );
+                    v("f-aperture").value = `f/${nearest}`;
+                    found = true;
+                }
+
+                const et =
+                    exif.ExposureTime ||
+                    exif.exposureTime ||
+                    exif.ShutterSpeedValue;
+                if (et) {
+                    const t = parseFloat(et);
+                    if (t >= 1) {
+                        v("f-shutter").value = `${t}s`;
+                    } else {
+                        const raw = Math.round(1 / t);
+                        const clean = [
+                            2, 4, 6, 8, 10, 13, 15, 20, 25, 30, 40, 50, 60, 80,
+                            100, 125, 160, 200, 250, 320, 400, 500, 640, 800,
+                            1000, 1250, 1600, 2000, 2500, 3200, 4000, 5000,
+                            6400, 8000,
+                        ];
+                        const nearest = clean.reduce((a, b) =>
+                            Math.abs(b - raw) < Math.abs(a - raw) ? b : a
+                        );
+                        v("f-shutter").value = `1/${nearest}s`;
+                    }
+                    found = true;
+                }
+
+                const iso =
+                    exif.ISO ||
+                    exif.ISOSpeedRatings ||
+                    exif.iso ||
+                    exif.ISOSpeed;
+                if (iso) {
+                    v("f-iso").value = String(
+                        Array.isArray(iso) ? iso[0] : iso
+                    );
+                    found = true;
+                }
+
+                const fl = exif.FocalLength || exif.focalLength;
+                const flDisplay = fl || fl35;
+                if (flDisplay) {
+                    v("f-focal").value = `${Math.round(
+                        parseFloat(flDisplay)
+                    )}mm`;
+                    found = true;
+                }
+
+                const d =
+                    exif.DateTimeOriginal ||
+                    exif.CreateDate ||
+                    exif.DateTime ||
+                    exif.dateTimeOriginal ||
+                    exif.GPSDateStamp ||
+                    exif.GPSDateTime ||
+                    exif.gpsDateStamp;
+                if (d) {
+                    const dt =
+                        d instanceof Date
+                            ? d
+                            : new Date(
+                                  String(d).replace(
+                                      /^(\d{4}):(\d{2}):(\d{2})/,
+                                      "$1-$2-$3"
+                                  )
+                              );
+                    if (!isNaN(dt)) {
+                        const months = [
+                            "Jan",
+                            "Fev",
+                            "Mar",
+                            "Abr",
+                            "Mai",
+                            "Jun",
+                            "Jul",
+                            "Ago",
+                            "Set",
+                            "Out",
+                            "Nov",
+                            "Dez",
+                        ];
+                        v("f-date").value = `${dt.getDate()} ${
+                            months[dt.getMonth()]
+                        } ${dt.getFullYear()}`;
+                        found = true;
+                    }
+                }
+
+                return found;
+            }
+
+            async function handleFile(file) {
+                if (!file || !file.type.startsWith("image/")) return;
+
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+                preview.classList.remove("hidden");
+                dropIcon.classList.add("hidden");
+                dropText.classList.add("hidden");
+                changeBtn.classList.remove("hidden");
+                exifBadge.classList.remove("hidden");
+
+                statusDot.classList.add("active");
+                document.getElementById(
+                    "f-image"
+                ).value = `/images/${file.name}`;
+
+                const imgType =
+                    file.type === "image/jpeg" ? "image/jpeg" : "image/png";
+                currentImageType =
+                    imgType === "image/jpeg" ? "image/jpeg" : "image/png";
+                const bitmap = await createImageBitmap(file);
+                const MAX = 1500;
+                const scale = Math.min(
+                    1,
+                    MAX / Math.max(bitmap.width, bitmap.height)
+                );
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.round(bitmap.width * scale);
+                canvas.height = Math.round(bitmap.height * scale);
+                canvas
+                    .getContext("2d")
+                    .drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+                currentImageBase64 = canvas
+                    .toDataURL(imgType, 0.85)
+                    .split(",")[1];
+
+                if (localStorage.getItem("gemini_api_key")) {
+                    aiBtn.disabled = false;
+                }
+
+                exifBadge.textContent = "⏳ A ler EXIF...";
+
+                try {
+                    const buffer = await file.arrayBuffer();
+                    let exif = null;
+                    // Note: using window.exifr from CDN
+                    if (window.exifr) {
+                        try {
+                            exif = await exifr.parse(buffer, {
+                                tiff: true,
+                                exif: true,
+                                gps: true,
+                                ifd0: true,
+                                ifd1: true,
+                                makerNote: false,
+                                userComment: false,
+                                translateKeys: true,
+                                translateValues: true,
+                                reviveValues: true,
+                                multiSegment: true,
+                            });
+                        } catch (e1) {
+                            console.warn("parse default attempt failed:", e1);
+                        }
+                    } else {
+                        console.error("EXIFR module not injected yet.");
+                    }
+
+                    const found = fillExif(exif);
+
+                    if (found) {
+                        exifBadge.textContent = "✓ EXIF lido";
+                        exifBadge.className =
+                            "absolute top-4 left-4 bg-zinc-950/85 border border-zinc-800 text-[#e8ff47] font-mono text-[10px] px-2.5 py-1 tracking-widest uppercase backdrop-blur-md";
+                    } else {
+                        exifBadge.textContent = "⚠ Sem EXIF/Lido";
+                        exifBadge.className =
+                            "absolute top-4 left-4 bg-zinc-950/85 border border-zinc-800 text-[#ff6b35] font-mono text-[10px] px-2.5 py-1 tracking-widest uppercase backdrop-blur-md";
+                    }
+                } catch (err) {
+                    console.error(err);
+                    exifBadge.textContent = "✗ Erro EXIF";
+                }
+            }
+
+            // Generate & TS formatting
+            function esc(s) {
+                return String(s)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;");
+            }
+
+            function syntaxHighlight(obj) {
+                const lines = ["{"];
+                for (const [k, v] of Object.entries(obj)) {
+                    if (Array.isArray(v)) {
+                        lines.push(
+                            `  <span class="text-[#7dd3fc]">${k}</span><span class="text-zinc-500">:</span> <span class="text-zinc-500">[</span>${v
+                                .map(
+                                    (t) =>
+                                        `<span class="text-[#86efac]">"${esc(
+                                            t
+                                        )}"</span>`
+                                )
+                                .join(
+                                    ", "
+                                )}<span class="text-zinc-500">]</span>,`
+                        );
+                    } else {
+                        lines.push(
+                            `  <span class="text-[#7dd3fc]">${k}</span><span class="text-zinc-500">:</span> <span class="text-[#86efac]">"${esc(
+                                v
+                            )}"</span>,`
+                        );
+                    }
+                }
+                lines.push("},");
+                return lines.join("\n");
+            }
+
+            generateBtn.addEventListener("click", () => {
+                const v = (id) => document.getElementById(id).value.trim();
+                const obj = {
+                    id: v("f-id") || "foto-0001",
+                    title: v("f-title") || "Sem título",
+                    image: v("f-image"),
+                    alt: v("f-alt"),
+                    tags,
+                    description: v("f-description"),
+                    date: v("f-date"),
+                    location: v("f-location"),
+                    camera: v("f-camera"),
+                    lens: v("f-lens"),
+                    aperture: v("f-aperture"),
+                    shutterSpeed: v("f-shutter"),
+                    iso: v("f-iso"),
+                    focalLength: v("f-focal"),
+                };
+
+                Object.keys(obj).forEach((k) => {
+                    if (Array.isArray(obj[k]) ? obj[k].length === 0 : !obj[k])
+                        delete obj[k];
+                });
+
+                outputPre.innerHTML = syntaxHighlight(obj);
+                outputSection.classList.remove("hidden");
+                outputSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                });
+            });
+
+            // Clear & Copy
+            clearBtn.addEventListener("click", () => {
+                [
+                    "f-id",
+                    "f-title",
+                    "f-image",
+                    "f-alt",
+                    "f-description",
+                    "f-date",
+                    "f-location",
+                    "f-camera",
+                    "f-lens",
+                    "f-aperture",
+                    "f-shutter",
+                    "f-iso",
+                    "f-focal",
+                ].forEach((id) => (document.getElementById(id).value = ""));
+                tags = [];
+                renderTags();
+
+                preview.src = "";
+                preview.classList.add("hidden");
+                dropIcon.classList.remove("hidden");
+                dropText.classList.remove("hidden");
+                changeBtn.classList.add("hidden");
+                exifBadge.classList.add("hidden");
+
+                statusDot.classList.remove("active");
+                debugPanel.classList.add("hidden");
+                debugContent.classList.add("hidden");
+                outputSection.classList.add("hidden");
+
+                currentImageBase64 = null;
+                currentImageType = null;
+                aiBtn.disabled = true;
+            });
+
+            copyBtn.addEventListener("click", () => {
+                const v = (id) => document.getElementById(id).value.trim();
+                const obj = {
+                    id: v("f-id") || "foto-0001",
+                    title: v("f-title") || "Sem título",
+                    image: v("f-image"),
+                    alt: v("f-alt"),
+                    tags,
+                    description: v("f-description"),
+                    date: v("f-date"),
+                    location: v("f-location"),
+                    camera: v("f-camera"),
+                    lens: v("f-lens"),
+                    aperture: v("f-aperture"),
+                    shutterSpeed: v("f-shutter"),
+                    iso: v("f-iso"),
+                    focalLength: v("f-focal"),
+                };
+                Object.keys(obj).forEach((k) => {
+                    if (Array.isArray(obj[k]) ? obj[k].length === 0 : !obj[k])
+                        delete obj[k];
+                });
+
+                const lines = ["{"];
+                for (const [k, v2] of Object.entries(obj)) {
+                    if (Array.isArray(v2))
+                        lines.push(
+                            `  ${k}: [${v2.map((t) => `"${t}"`).join(", ")}],`
+                        );
+                    else lines.push(`  ${k}: "${v2}",`);
+                }
+                lines.push("},");
+                navigator.clipboard.writeText(lines.join("\n"));
+                copyBtn.innerHTML = "✓ Copiado";
+                setTimeout(() => {
+                    copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar`;
+                }, 2000);
+            });
+        })();
+    </script>
+</Layout>
