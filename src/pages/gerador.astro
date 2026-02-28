@@ -1114,6 +1114,10 @@ import Layout from "../layouts/Layout.astro";
                                     ", "
                                 )}<span class="text-zinc-500">]</span>,`
                         );
+                    } else if (typeof v === "boolean") {
+                        lines.push(
+                            `  <span class="text-[#7dd3fc]">${k}</span><span class="text-zinc-500">:</span> <span class="text-purple-400">${v}</span>,`
+                        );
                     } else {
                         lines.push(
                             `  <span class="text-[#7dd3fc]">${k}</span><span class="text-zinc-500">:</span> <span class="text-[#86efac]">"${esc(
@@ -1143,10 +1147,15 @@ import Layout from "../layouts/Layout.astro";
                     shutterSpeed: v("f-shutter"),
                     iso: v("f-iso"),
                     focalLength: v("f-focal"),
+                    aiGenerated: true,
                 };
 
                 Object.keys(obj).forEach((k) => {
-                    if (Array.isArray(obj[k]) ? obj[k].length === 0 : !obj[k])
+                    if (
+                        Array.isArray(obj[k])
+                            ? obj[k].length === 0
+                            : obj[k] === "" || obj[k] == null
+                    )
                         delete obj[k];
                 });
 

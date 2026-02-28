@@ -12,6 +12,7 @@ export interface PhotoInfo {
     aperture?: string;
     shutterSpeed?: string;
     iso?: string;
+    aiGenerated?: boolean;
 }
 
 export const photos: PhotoInfo[] = [
@@ -21,7 +22,7 @@ export const photos: PhotoInfo[] = [
         date: "13 Fev 2026", location: "Moreira de Cónegos, Portugal", camera: "iPhone 17 Pro", lens: "Leica Lux NOCTILUX-50mm f/1.2 ASPH", aperture: "f/1.2", shutterSpeed: "1/121s", iso: "80"
     },
     {
-        id: "animais-0001", title: "Expressão pura", image: "/images/animais/IMG_0992.jpg", alt: "Gato tricolor a bocejar, fotografado em primeiro plano sobre uma cama.", tags: ["Animais", "Gato", "Quotidiano"],
+        id: "animais-0992", title: "Expressão pura", image: "/images/animais/IMG_0992.jpg", alt: "Gato tricolor a bocejar, fotografado em primeiro plano sobre uma cama.", tags: ["Animais", "Gato", "Quotidiano"],
         description: "Um momento natural, captado sem preparação — apenas expressão pura.",
         date: "17 Fev 2026", location: "Aves, Portugal", camera: "iPhone 17 Pro", lens: "Leica Lux I-SOLARIS 26mm f/1.5", aperture: "f/5.6", shutterSpeed: "1/47s", iso: "200"
     }
