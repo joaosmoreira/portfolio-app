@@ -78,9 +78,16 @@ const relatedPhotos = photos
                     class="md:col-span-2 border-t md:border-t-0 md:border-l border-zinc-200 pt-8 md:pt-0 md:pl-12 flex flex-col"
                 >
                     <h3
-                        class="font-semibold text-zinc-900 uppercase tracking-widest text-[11px] mb-6"
+                        class="font-semibold text-zinc-900 uppercase tracking-widest text-[11px] mb-6 flex items-center gap-2"
                     >
                         Detalhes Técnicos
+                        {
+                            photo.aiGenerated && (
+                                <span class="normal-case tracking-normal font-normal text-[9px] text-zinc-400 border border-zinc-200 rounded-full px-2 py-0.5 leading-none">
+                                    info gerada com IA
+                                </span>
+                            )
+                        }
                     </h3>
 
                     <div
@@ -168,6 +175,32 @@ const relatedPhotos = photos
                         }
                     </div>
                 </div>
+
+                {
+                    photo.aiGenerated && (
+                        <div class="mt-4 flex items-center justify-end text-[10px] text-zinc-400 font-mono tracking-widest uppercase">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mr-1.5 opacity-70"
+                            >
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                                <path d="M5 3v4" />
+                                <path d="M19 17v4" />
+                                <path d="M3 5h4" />
+                                <path d="M17 19h4" />
+                            </svg>
+                            Gerado com IA
+                        </div>
+                    )
+                }
             </div>
         </div>
 
