@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 interface Props {
   title?: string;
@@ -113,6 +114,7 @@ const navLinks = [
         <Footer theme={theme} paddingX={noPadding} />
       </main>
     </div>
+    <SpeedInsights />
     <style is:global>
       /* Scrollbar states for the custom scroll area */
       main::-webkit-scrollbar {
