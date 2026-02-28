@@ -938,11 +938,37 @@ import Layout from "../layouts/Layout.astro";
                             `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${exif.latitude}&longitude=${exif.longitude}&localityLanguage=pt`
                         );
                         const geoData = await geo.json();
+
+                        let preciseLocality = "";
+                        // BigDataCloud provides localityInfo.administrative arrays. Level 8 in PT is usually the 'Freguesia' (Parish)
+                        if (
+                            geoData.localityInfo &&
+                            geoData.localityInfo.administrative
+                        ) {
+                            const admin = geoData.localityInfo.administrative;
+                            // Search from highest precision (higher numbers usually bounded to 8-10) to lowest
+                            const parish =
+                                admin.find(
+                                    (a) =>
+                                        a.adminLevel === 8 ||
+                                        a.name
+                                            .toLowerCase()
+                                            .includes("freguesia")
+                                ) || admin[admin.length - 1];
+                            if (parish && parish.name)
+                                preciseLocality = parish.name
+                                    .replace(/Freguesia de /gi, "")
+                                    .replace(/União das Freguesias de /gi, "")
+                                    .trim();
+                        }
+
                         const city =
-                            geoData.city ||
+                            preciseLocality ||
                             geoData.locality ||
+                            geoData.city ||
                             geoData.principalSubdivision ||
                             "";
+
                         const country = geoData.countryName || "Portugal";
                         v("f-location").value = city
                             ? `${city}, ${country}`
