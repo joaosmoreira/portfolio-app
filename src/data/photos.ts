@@ -16,7 +16,7 @@ export interface PhotoInfo {
 
 export const photos: PhotoInfo[] = [
     {
-        id: "IMG_0909.heic", title: "Concreto", image: "/images/IMG_0909_web.jpg", alt: "Concreto", tags: ["Industrial", "Edifícios", "Concreto", "Estruturas"],
+        id: "IMG-0909", title: "Concreto", image: "/images/IMG_0909_web.jpg", alt: "Concreto", tags: ["Industrial", "Edifícios", "Concreto", "Estruturas"],
         description: "Visão vertical.",
         date: "13 Fev 2026", location: "Moreira de Cónegos, Portugal", camera: "iPhone 17 Pro", lens: "Leica Lux NOCTILUX-50mm f/1.2 ASPH", aperture: "f/1.2", shutterSpeed: "1/121s", iso: "80"
     },

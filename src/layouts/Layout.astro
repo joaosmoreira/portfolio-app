@@ -177,37 +177,39 @@ const navLinks = [
     <SpeedInsights />
     <Analytics />
 
-    <script>
-      const menuBtn = document.getElementById("mobile-menu-btn");
-      const closeBtn = document.getElementById("close-menu-btn");
-      const mobileMenu = document.getElementById("mobile-menu");
+    <script is:inline>
+      (function () {
+        const menuBtn = document.getElementById("mobile-menu-btn");
+        const closeBtn = document.getElementById("close-menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
 
-      function toggleMenu() {
-        if (!mobileMenu) return;
+        function toggleMenu() {
+          if (!mobileMenu) return;
 
-        if (mobileMenu.classList.contains("hidden")) {
-          // Open
-          mobileMenu.classList.remove("hidden");
-          mobileMenu.classList.add("flex");
-          // Small delay for transition
-          setTimeout(() => {
-            mobileMenu.classList.remove("opacity-0");
-            mobileMenu.classList.add("opacity-100");
-          }, 10);
-        } else {
-          // Close
-          mobileMenu.classList.remove("opacity-100");
-          mobileMenu.classList.add("opacity-0");
-          // Wait for transition to finish before hiding
-          setTimeout(() => {
-            mobileMenu.classList.remove("flex");
-            mobileMenu.classList.add("hidden");
-          }, 300);
+          if (mobileMenu.classList.contains("hidden")) {
+            // Open
+            mobileMenu.classList.remove("hidden");
+            mobileMenu.classList.add("flex");
+            // Small delay for transition
+            setTimeout(() => {
+              mobileMenu.classList.remove("opacity-0");
+              mobileMenu.classList.add("opacity-100");
+            }, 10);
+          } else {
+            // Close
+            mobileMenu.classList.remove("opacity-100");
+            mobileMenu.classList.add("opacity-0");
+            // Wait for transition to finish before hiding
+            setTimeout(() => {
+              mobileMenu.classList.remove("flex");
+              mobileMenu.classList.add("hidden");
+            }, 300);
+          }
         }
-      }
 
-      menuBtn?.addEventListener("click", toggleMenu);
-      closeBtn?.addEventListener("click", toggleMenu);
+        menuBtn?.addEventListener("click", toggleMenu);
+        closeBtn?.addEventListener("click", toggleMenu);
+      })();
     </script>
   </body>
 </html>
