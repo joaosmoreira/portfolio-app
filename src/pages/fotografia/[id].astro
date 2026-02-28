@@ -35,134 +35,218 @@ const relatedPhotos = photos
             </a>
         </div>
 
-        <div class="mb-12 flex justify-center w-full">
-            <img
-                src={photo.image}
-                alt={photo.alt}
-                class="max-h-[85vh] w-auto object-contain"
-            />
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-12 mb-20">
-            <div class="md:col-span-1 space-y-6">
-                <h1 class="text-4xl font-bold tracking-tighter text-zinc-900">
-                    {photo.title}
-                </h1>
-                <div class="flex flex-wrap gap-2">
-                    {
-                        photo.tags.map((tag: string) => (
-                            <span class="px-3 py-1 bg-zinc-100 text-zinc-600 text-sm font-medium rounded-full border border-zinc-200">
-                                {tag}
-                            </span>
-                        ))
-                    }
-                </div>
-                {
-                    photo.description && (
-                        <p class="text-zinc-600 text-lg leading-relaxed mt-4">
-                            {photo.description}
-                        </p>
-                    )
-                }
+        <div
+            id="photo-layout-container"
+            class="flex flex-col gap-12 mb-20 opacity-0 transition-opacity duration-500"
+        >
+            <div id="image-wrapper" class="flex justify-center w-full">
+                <img
+                    id="main-photo"
+                    src={photo.image}
+                    alt={photo.alt}
+                    class="max-h-[85vh] w-auto max-w-full object-contain"
+                />
             </div>
 
-            <div
-                class="md:col-span-2 bg-zinc-50 border border-zinc-200 p-6 rounded-2xl flex flex-col"
-            >
-                <h3
-                    class="font-semibold text-zinc-900 uppercase tracking-widest text-xs mb-6"
-                >
-                    Detalhes Técnicos
-                </h3>
+            <div id="info-wrapper" class="grid md:grid-cols-3 gap-12 w-full">
+                <div id="info-col-1" class="md:col-span-1 space-y-6">
+                    <h1
+                        class="text-4xl font-bold tracking-tighter text-zinc-900"
+                    >
+                        {photo.title}
+                    </h1>
+                    <div class="flex flex-wrap gap-2">
+                        {
+                            photo.tags.map((tag: string) => (
+                                <span class="px-3 py-1 bg-zinc-100 text-zinc-600 text-sm font-medium rounded-full border border-zinc-200">
+                                    {tag}
+                                </span>
+                            ))
+                        }
+                    </div>
+                    {
+                        photo.description && (
+                            <p class="text-zinc-600 text-lg leading-relaxed mt-4">
+                                {photo.description}
+                            </p>
+                        )
+                    }
+                </div>
 
                 <div
-                    class="grid grid-cols-2 gap-x-6 gap-y-4 flex-grow content-start"
+                    id="info-col-2"
+                    class="md:col-span-2 bg-zinc-50 border border-zinc-200 p-6 rounded-2xl flex flex-col"
                 >
-                    {
-                        photo.date && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">Data</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.date}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.location && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">Local</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.location}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.camera && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">Câmara</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.camera}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.lens && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">Lente</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.lens}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.aperture && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">Abertura</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.aperture}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.shutterSpeed && (
-                            <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
-                                <span class="text-zinc-500 mb-1">
-                                    Obturação
-                                </span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.shutterSpeed}
-                                </span>
-                            </div>
-                        )
-                    }
-                    {
-                        photo.iso && (
-                            <div class="flex flex-col text-sm border-b border-transparent pb-2">
-                                <span class="text-zinc-500 mb-1">ISO</span>
-                                <span class="font-medium text-zinc-900">
-                                    {photo.iso}
-                                </span>
-                            </div>
-                        )
-                    }
+                    <h3
+                        class="font-semibold text-zinc-900 uppercase tracking-widest text-xs mb-6"
+                    >
+                        Detalhes Técnicos
+                    </h3>
+
+                    <div
+                        class="grid grid-cols-2 gap-x-6 gap-y-4 flex-grow content-start"
+                    >
+                        {
+                            photo.date && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">Data</span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.date}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.location && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">
+                                        Local
+                                    </span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.location}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.camera && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">
+                                        Câmara
+                                    </span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.camera}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.lens && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">
+                                        Lente
+                                    </span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.lens}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.aperture && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">
+                                        Abertura
+                                    </span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.aperture}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.shutterSpeed && (
+                                <div class="flex flex-col text-sm border-b border-zinc-200 pb-2">
+                                    <span class="text-zinc-500 mb-1">
+                                        Obturação
+                                    </span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.shutterSpeed}
+                                    </span>
+                                </div>
+                            )
+                        }
+                        {
+                            photo.iso && (
+                                <div class="flex flex-col text-sm border-b border-transparent pb-2">
+                                    <span class="text-zinc-500 mb-1">ISO</span>
+                                    <span class="font-medium text-zinc-900">
+                                        {photo.iso}
+                                    </span>
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
             </div>
+
+            {
+                relatedPhotos.length > 0 && (
+                    <div class="border-t border-zinc-200 pt-16">
+                        <h2 class="text-2xl font-bold tracking-tight text-zinc-900 mb-8">
+                            Fotografias Relacionadas
+                        </h2>
+                        <PhotoGrid photos={relatedPhotos} />
+                    </div>
+                )
+            }
         </div>
 
-        {
-            relatedPhotos.length > 0 && (
-                <div class="border-t border-zinc-200 pt-16">
-                    <h2 class="text-2xl font-bold tracking-tight text-zinc-900 mb-8">
-                        Fotografias Relacionadas
-                    </h2>
-                    <PhotoGrid photos={relatedPhotos} />
-                </div>
-            )
-        }
+        <script is:inline>
+            document.addEventListener("DOMContentLoaded", () => {
+                const img = document.getElementById("main-photo");
+                const container = document.getElementById(
+                    "photo-layout-container"
+                );
+                const imageWrapper = document.getElementById("image-wrapper");
+                const infoWrapper = document.getElementById("info-wrapper");
+                const infoCol1 = document.getElementById("info-col-1");
+                const infoCol2 = document.getElementById("info-col-2");
+
+                function updateLayout() {
+                    if (!img || !container) return;
+
+                    const isPortrait = img.naturalHeight > img.naturalWidth;
+                    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+
+                    if (isPortrait && isDesktop) {
+                        // Side-by-side for vertical images
+                        container.className =
+                            "flex flex-row gap-16 mb-20 items-start opacity-100 transition-opacity duration-500";
+                        imageWrapper.className = "w-1/2 flex justify-end";
+
+                        infoWrapper.className = "w-1/2 flex flex-col gap-8";
+                        infoCol1.className = "space-y-6";
+                        infoCol2.className =
+                            "bg-zinc-50 border border-zinc-200 p-6 rounded-2xl flex flex-col mt-2";
+                    } else {
+                        // Stacked for horizontal images or mobile
+                        container.className =
+                            "flex flex-col gap-12 mb-20 opacity-100 transition-opacity duration-500";
+                        imageWrapper.className = "flex justify-center w-full";
+
+                        infoWrapper.className =
+                            "grid grid-cols-1 md:grid-cols-3 gap-12 w-full";
+                        infoCol1.className = "md:col-span-1 space-y-6";
+                        infoCol2.className =
+                            "md:col-span-2 bg-zinc-50 border border-zinc-200 p-6 rounded-2xl flex flex-col";
+                    }
+                }
+
+                if (img) {
+                    if (img.complete && img.naturalHeight !== 0) {
+                        updateLayout();
+                    } else {
+                        img.addEventListener("load", updateLayout);
+                    }
+
+                    window.addEventListener("resize", () => {
+                        if (img.complete && img.naturalHeight !== 0)
+                            updateLayout();
+                    });
+
+                    // Fallback to show container just in case image fails to load or something
+                    setTimeout(() => {
+                        if (
+                            container &&
+                            container.classList.contains("opacity-0")
+                        ) {
+                            updateLayout();
+                            container.classList.remove("opacity-0");
+                        }
+                    }, 1500);
+                }
+            });
+        </script>
     </div>
 </Layout>
