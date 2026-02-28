@@ -570,12 +570,21 @@ import Layout from "../layouts/Layout.astro";
             .map(([k, v]) => `- ${k}: ${v}`)
             .join("\n")}
 
+        INSTRUÇÕES IMPORTANTES PARA TAGS E CATEGORIA:
+        O portfolio usa categorias específicas de pastas. Escolhe exatamente 1 (UMA) "category" principal que melhor define a foto a partir desta lista restrita:
+        ['animais', 'pessoas', 'desporto', 'quotidiano', 'arquitetura', 'betao', 'natureza']
+
+        - O "id" deve seguir o formato: categoria-0000 (ex: quotidiano-0012, animais-0004). Podes gerar 4 números aleatórios no fim.
+        - O "image_path" deve começar por /images/categoria/nome_do_ficheiro.jpg (usa a categoria escolhida e substitui o nome pela tua sugestão).
+
         Devolve APENAS um objeto JSON válido, perfeitamente formatado, sem blocos de código markdown (\`\`\`json), contendo EXATAMENTE estas propriedades:
         {
+          "id": "A tua tag principal gerada - 4 números",
+          "image_path": "/images/tua_tag/foto.jpg",
           "title": "Um título curto, impactante e evocativo (1-3 palavras).",
           "description": "Uma descrição envolvente e ligeiramente poética da fotografia (1-2 frases). Não fales do equipamento, foca na atmosfera, sentimento ou arquitetura/luz.",
           "alt": "Descrição simples e direta da imagem para ser lida por leitores de ecrã (acessibilidade).",
-          "tags": ["array", "de", "3-4", "tags", "relevantes"]
+          "tags": ["array", "de", "3-5", "tags", "relevantes", "incluindo", "a", "categoria", "escolhida"]
         }`;
 
                 try {
@@ -628,6 +637,11 @@ import Layout from "../layouts/Layout.astro";
                         );
                     }
 
+                    if (parsed.id)
+                        document.getElementById("f-id").value = parsed.id;
+                    if (parsed.image_path)
+                        document.getElementById("f-image").value =
+                            parsed.image_path;
                     if (parsed.title)
                         document.getElementById("f-title").value = parsed.title;
                     if (parsed.description)
@@ -764,13 +778,17 @@ import Layout from "../layouts/Layout.astro";
                     exif.lensModel ||
                     exif.Lens ||
                     exif.lens ||
-                    "";
+                    exif.LensMake
+                        ? exif.LensMake + " " + exif.LensModel
+                        : "";
+
                 const fl35 =
                     exif.FocalLengthIn35mmFormat ||
                     exif.FocalLengthIn35mmFilm ||
                     exif.focalLengthIn35mmFormat;
+
                 if (lensModel) {
-                    v("f-lens").value = lensModel;
+                    v("f-lens").value = lensModel.trim();
                     found = true;
                 } else if (fl35) {
                     const fn2 =
@@ -784,18 +802,33 @@ import Layout from "../layouts/Layout.astro";
                     found = true;
                 }
 
-                const fn = exif.FNumber || exif.fNumber || exif.ApertureValue;
+                // Apple/Leica lux simulated aperture can sometimes be stored in specific fields, else fallback to physical FNumber
+                const fn = exif.ApertureValue || exif.FNumber || exif.fNumber;
+
                 if (fn) {
                     const rounded = parseFloat(fn);
-                    const fStops = [
-                        1.0, 1.1, 1.2, 1.4, 1.6, 1.7, 1.8, 2.0, 2.2, 2.4, 2.5,
-                        2.8, 3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3, 7.1, 8, 9, 10,
-                        11, 13, 14, 16, 18, 20, 22,
-                    ];
-                    const nearest = fStops.reduce((a, b) =>
-                        Math.abs(b - rounded) < Math.abs(a - rounded) ? b : a
-                    );
-                    v("f-aperture").value = `f/${nearest}`;
+
+                    // Allow precise floats if it comes from software (like Leica 1.5), otherwise match closest standard stop
+                    const isStandard =
+                        rounded % 0.1 === 0 ||
+                        rounded === 1.5 ||
+                        rounded === 1.78;
+
+                    if (isStandard) {
+                        v("f-aperture").value = `f/${rounded}`;
+                    } else {
+                        const fStops = [
+                            1.0, 1.1, 1.2, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.2,
+                            2.4, 2.5, 2.8, 3.2, 3.5, 4.0, 4.5, 5.0, 5.6, 6.3,
+                            7.1, 8, 9, 10, 11, 13, 14, 16, 18, 20, 22,
+                        ];
+                        const nearest = fStops.reduce((a, b) =>
+                            Math.abs(b - rounded) < Math.abs(a - rounded)
+                                ? b
+                                : a
+                        );
+                        v("f-aperture").value = `f/${nearest}`;
+                    }
                     found = true;
                 }
 
