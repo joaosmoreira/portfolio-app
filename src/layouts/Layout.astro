@@ -83,8 +83,8 @@ const navLinks = [
           }
         </ul>
 
-        <!-- Mobile Menu Triger (optional implementation) -->
-        <button class="md:hidden">
+        <!-- Mobile Menu Triger -->
+        <button id="mobile-menu-btn" class="md:hidden" aria-label="Abrir Menu">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -104,6 +104,52 @@ const navLinks = [
           </svg>
         </button>
       </nav>
+
+      <!-- Mobile Menu Overlay -->
+      <div
+        id="mobile-menu"
+        class="fixed inset-0 bg-zinc-950/95 z-50 hidden flex-col items-center justify-center transition-opacity opacity-0 backdrop-blur-md"
+      >
+        <button
+          id="close-menu-btn"
+          class="absolute top-6 right-8 text-white p-2"
+          aria-label="Fechar Menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-x"
+            ><line x1="18" y1="6" x2="6" y2="18"></line><line
+              x1="6"
+              y1="6"
+              x2="18"
+              y2="18"></line>
+          </svg>
+        </button>
+        <ul
+          class="flex flex-col gap-8 text-2xl font-medium text-white text-center"
+        >
+          {
+            navLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="hover:text-zinc-400 transition-colors uppercase tracking-widest block py-2"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
       <!-- Conteúdo das Páginas -->
       <main
@@ -130,5 +176,38 @@ const navLinks = [
     </style>
     <SpeedInsights />
     <Analytics />
+
+    <script>
+      const menuBtn = document.getElementById("mobile-menu-btn");
+      const closeBtn = document.getElementById("close-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      function toggleMenu() {
+        if (!mobileMenu) return;
+
+        if (mobileMenu.classList.contains("hidden")) {
+          // Open
+          mobileMenu.classList.remove("hidden");
+          mobileMenu.classList.add("flex");
+          // Small delay for transition
+          setTimeout(() => {
+            mobileMenu.classList.remove("opacity-0");
+            mobileMenu.classList.add("opacity-100");
+          }, 10);
+        } else {
+          // Close
+          mobileMenu.classList.remove("opacity-100");
+          mobileMenu.classList.add("opacity-0");
+          // Wait for transition to finish before hiding
+          setTimeout(() => {
+            mobileMenu.classList.remove("flex");
+            mobileMenu.classList.add("hidden");
+          }, 300);
+        }
+      }
+
+      menuBtn?.addEventListener("click", toggleMenu);
+      closeBtn?.addEventListener("click", toggleMenu);
+    </script>
   </body>
 </html>
