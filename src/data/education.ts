@@ -2,13 +2,13 @@ export const education = [
     {
         institution: "CICCOPN",
         course: "Técnico Preparador de Obra – CAD e Modelação BIM",
-        duration: "nov de 2024 - jul de 2025",
+        duration: "11/2024 - 07/2025",
         skills: ["AutoCAD", "AutoCAD Civil 3D", "Revit", "BIM"],
     },
     {
         institution: "Code for All_",
         course: "A 14-Week Intensive && Immersive Full Stack Programming Bootcamp",
-        duration: "jan de 2023 - abr de 2023",
+        duration: "01/2023 - 04/2023",
         skills: ["Git", "Java", "Spring Framework", "SQL", "JavaScript", "React", "HTML", "CSS"],
     },
     {
