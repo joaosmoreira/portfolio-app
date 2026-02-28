@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { siteConfig } from "../data/config";
-import { User, Layers, Hammer } from "lucide-react";
 import { education } from "../data/education";
 import EducationItem from "../components/EducationItem.astro";
 
@@ -10,7 +9,7 @@ const olderEducation = education.slice(3);
 ---
 
 <Layout title="Sobre | João Moreira" theme="light">
-  <div class="max-w-3xl mx-auto w-full">
+  <div class="max-w-4xl mx-auto w-full">
     <header class="mb-12">
       <h1 class="text-4xl font-bold tracking-tighter text-zinc-900 mb-4">
         Sobre Mim
@@ -24,7 +23,7 @@ const olderEducation = education.slice(3);
     <div
       class="prose prose-lg max-w-none prose-p:text-zinc-700 prose-p:leading-relaxed"
     >
-      <div class="flex flex-col md:flex-row gap-8 items-start">
+      <div class="flex flex-col md:flex-row gap-8 items-start mb-16">
         <div
           class="w-full md:w-1/3 aspect-[3/4] relative rounded-2xl overflow-hidden flex-shrink-0 bg-zinc-100 border border-zinc-200"
         >
@@ -35,7 +34,7 @@ const olderEducation = education.slice(3);
           />
         </div>
 
-        <div class="w-full md:w-2/3 space-y-8">
+        <div class="w-full md:w-2/3">
           <div
             class="bg-zinc-50 border border-zinc-200 p-8 rounded-2xl relative overflow-hidden"
           >
@@ -44,121 +43,80 @@ const olderEducation = education.slice(3);
             >
             </div>
             <p
-              class="relative z-10 text-xl font-medium text-zinc-900 italic before:content-[''] before:w-8 before:h-1 border-l-4 border-zinc-400 pl-6"
+              class="relative z-10 text-xl font-medium text-zinc-900 italic before:content-[''] before:w-8 before:h-1 border-l-4 border-zinc-400 pl-6 m-0"
             >
               {siteConfig.bio}
             </p>
           </div>
-
-          <div class="space-y-4 pt-6">
-            <h2 class="text-2xl font-bold text-zinc-900 tracking-tight">
-              Educação
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-              <div class="space-y-0">
-                {
-                  recentEducation.map((item) => (
-                    <EducationItem
-                      institution={item.institution}
-                      course={item.course}
-                      duration={item.duration}
-                      skills={item.skills}
-                    />
-                  ))
-                }
-              </div>
-              <div class="space-y-0">
-                {
-                  olderEducation.map((item) => (
-                    <EducationItem
-                      institution={item.institution}
-                      course={item.course}
-                      duration={item.duration}
-                      skills={item.skills}
-                    />
-                  ))
-                }
-              </div>
-            </div>
-          </div>
-
-          <div class="space-y-4 pt-4">
-            <h2 class="text-2xl font-bold text-zinc-900 tracking-tight">
-              Interesses & Cultura
-            </h2>
-            <div class="flex flex-col gap-4 text-zinc-600">
-              <p>
-                Fora do ambiente rigoroso dos projetos e das obras, mantenho um
-                lado altamente dinâmico da minha vida.
-              </p>
-
-              <ul class="space-y-3">
-                <li class="flex items-center gap-3">
-                  <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
-                  <span
-                    ><strong>Fotografia:</strong> Uma paixão que me permite captar
-                    detalhes industriais, elementos arquitetónicos e a essência do
-                    quotidiano através das lentes.</span
-                  >
-                </li>
-                <li class="flex items-center gap-3">
-                  <div class="w-2 h-2 rounded-full bg-zinc-400"></div>
-                  <span
-                    ><strong>Exploração Tecnológica:</strong> Estou constantemente
-                    a experimentar e a analisar novas frameworks, gadgets e ferramentas
-                    digitais que otimizam o dia a dia e os processos de trabalho.</span
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6 mt-16 text-zinc-600">
-        <div
-          class="bg-zinc-50 p-6 rounded-xl border border-zinc-200 flex flex-col items-center text-center group hover:bg-zinc-100 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-white border border-zinc-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm"
-          >
-            <Layers className="text-zinc-800 w-6 h-6" />
-          </div>
-          <h3 class="text-zinc-900 font-semibold mb-2">Design & Web</h3>
-          <p class="text-sm">
-            Anos de experiência em criar interfaces e compor elementos visuais
-            equilibrados.
+      <div class="space-y-6 mb-16">
+        <h2 class="text-2xl font-bold text-zinc-900 tracking-tight m-0">
+          Interesses & Cultura
+        </h2>
+        <div class="flex flex-col gap-4 text-zinc-600">
+          <p class="m-0">
+            Fora do ambiente rigoroso dos projetos e das obras, mantenho um lado
+            altamente dinâmico da minha vida.
           </p>
-        </div>
 
-        <div
-          class="bg-zinc-50 p-6 rounded-xl border border-zinc-200 flex flex-col items-center text-center group hover:bg-zinc-100 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-white border border-zinc-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm"
-          >
-            <Hammer className="text-zinc-800 w-6 h-6" />
-          </div>
-          <h3 class="text-zinc-900 font-semibold mb-2">Preparação de Obra</h3>
-          <p class="text-sm">
-            Rigor e atenção extrema ao detalhe aplicados a grandes projetos de
-            montagem.
-          </p>
+          <ul class="space-y-4 mt-4 list-none pl-0">
+            <li class="flex items-start gap-3">
+              <div
+                class="w-2 h-2 rounded-full bg-zinc-400 mt-2.5 flex-shrink-0"
+              >
+              </div>
+              <span class="m-0"
+                ><strong>Fotografia:</strong> Uma paixão que me permite captar detalhes
+                industriais, elementos arquitetónicos e a essência do quotidiano
+                através das lentes.</span
+              >
+            </li>
+            <li class="flex items-start gap-3">
+              <div
+                class="w-2 h-2 rounded-full bg-zinc-400 mt-2.5 flex-shrink-0"
+              >
+              </div>
+              <span class="m-0"
+                ><strong>Exploração Tecnológica:</strong> Estou constantemente a
+                experimentar e a analisar novas frameworks, gadgets e ferramentas
+                digitais que otimizam o dia a dia e os processos de trabalho.</span
+              >
+            </li>
+          </ul>
         </div>
+      </div>
 
-        <div
-          class="bg-zinc-50 p-6 rounded-xl border border-zinc-200 flex flex-col items-center text-center group hover:bg-zinc-100 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-white border border-zinc-200 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm"
-          >
-            <User className="text-zinc-800 w-6 h-6" />
+      <div class="space-y-8">
+        <h2 class="text-2xl font-bold text-zinc-900 tracking-tight m-0">
+          Educação
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+          <div class="space-y-0">
+            {
+              recentEducation.map((item) => (
+                <EducationItem
+                  institution={item.institution}
+                  course={item.course}
+                  duration={item.duration}
+                  skills={item.skills}
+                />
+              ))
+            }
           </div>
-          <h3 class="text-zinc-900 font-semibold mb-2">Metódico</h3>
-          <p class="text-sm">
-            Abordagem minuciosa em cada desafio, garantindo que as peças
-            encaixam com exatidão.
-          </p>
+          <div class="space-y-0">
+            {
+              olderEducation.map((item) => (
+                <EducationItem
+                  institution={item.institution}
+                  course={item.course}
+                  duration={item.duration}
+                  skills={item.skills}
+                />
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
