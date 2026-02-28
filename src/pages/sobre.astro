@@ -14,7 +14,7 @@ const olderEducation = education.slice(3);
       <h1 class="text-4xl font-bold tracking-tighter text-zinc-900 mb-4">
         Sobre Mim
       </h1>
-      <p class="text-xl text-zinc-600 font-light">
+      <p class="text-base md:text-xl text-zinc-600 font-light">
         Do design gráfico e web para o rigor da preparação de obra de estruturas
         metálicas.
       </p>
@@ -35,19 +35,9 @@ const olderEducation = education.slice(3);
         </div>
 
         <div class="w-full md:w-2/3">
-          <div
-            class="bg-zinc-50 border border-zinc-200 p-8 rounded-2xl relative overflow-hidden"
-          >
-            <div
-              class="absolute top-0 right-0 w-64 h-64 bg-black/5 blur-[100px] rounded-full pointer-events-none translate-x-1/2 -translate-y-1/2"
-            >
-            </div>
-            <p
-              class="relative z-10 text-xl font-medium text-zinc-900 italic before:content-[''] before:w-8 before:h-1 border-l-4 border-zinc-400 pl-6 m-0"
-            >
-              {siteConfig.bio}
-            </p>
-          </div>
+          <p class="text-base md:text-lg text-zinc-700 leading-relaxed">
+            {siteConfig.bio}
+          </p>
         </div>
       </div>
 
@@ -92,31 +82,17 @@ const olderEducation = education.slice(3);
         <h2 class="text-2xl font-bold text-zinc-900 tracking-tight m-0">
           Educação
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-          <div class="space-y-0">
-            {
-              recentEducation.map((item) => (
-                <EducationItem
-                  institution={item.institution}
-                  course={item.course}
-                  duration={item.duration}
-                  skills={item.skills}
-                />
-              ))
-            }
-          </div>
-          <div class="space-y-0">
-            {
-              olderEducation.map((item) => (
-                <EducationItem
-                  institution={item.institution}
-                  course={item.course}
-                  duration={item.duration}
-                  skills={item.skills}
-                />
-              ))
-            }
-          </div>
+        <div class="space-y-0">
+          {
+            [...recentEducation, ...olderEducation].map((item) => (
+              <EducationItem
+                institution={item.institution}
+                course={item.course}
+                duration={item.duration}
+                skills={item.skills}
+              />
+            ))
+          }
         </div>
       </div>
     </div>
