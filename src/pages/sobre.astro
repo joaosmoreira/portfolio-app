@@ -2,6 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import { siteConfig } from "../data/config";
 import { User, Layers, Hammer } from "lucide-react";
+import { education } from "../data/education";
+import EducationItem from "../components/EducationItem.astro";
+
+const recentEducation = education.slice(0, 3);
+const olderEducation = education.slice(3);
 ---
 
 <Layout title="Sobre | João Moreira" theme="light">
@@ -24,7 +29,7 @@ import { User, Layers, Hammer } from "lucide-react";
           class="w-full md:w-1/3 aspect-[3/4] relative rounded-2xl overflow-hidden flex-shrink-0 bg-zinc-100 border border-zinc-200"
         >
           <img
-            src="./images/pessoal/moreira.jpg"
+            src="/pessoal/moreira.jpg"
             alt="João Moreira"
             class="w-full h-full object-cover"
           />
@@ -45,7 +50,39 @@ import { User, Layers, Hammer } from "lucide-react";
             </p>
           </div>
 
-          <div class="space-y-4">
+          <div class="space-y-4 pt-6">
+            <h2 class="text-2xl font-bold text-zinc-900 tracking-tight">
+              Educação
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+              <div class="space-y-0">
+                {
+                  recentEducation.map((item) => (
+                    <EducationItem
+                      institution={item.institution}
+                      course={item.course}
+                      duration={item.duration}
+                      skills={item.skills}
+                    />
+                  ))
+                }
+              </div>
+              <div class="space-y-0">
+                {
+                  olderEducation.map((item) => (
+                    <EducationItem
+                      institution={item.institution}
+                      course={item.course}
+                      duration={item.duration}
+                      skills={item.skills}
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4 pt-4">
             <h2 class="text-2xl font-bold text-zinc-900 tracking-tight">
               Interesses & Cultura
             </h2>
