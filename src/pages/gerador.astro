@@ -482,7 +482,7 @@ import Layout from "../layouts/Layout.astro";
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.cjs" is:inline
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js" is:inline
     ></script>
 
     <script is:inline>
@@ -580,7 +580,7 @@ import Layout from "../layouts/Layout.astro";
 
                 try {
                     const res = await fetch(
-                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
