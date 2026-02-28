@@ -783,10 +783,17 @@ import Layout from "../layouts/Layout.astro";
                 const make = exif.Make || exif.make || "";
                 const model = exif.Model || exif.model || "";
                 if (model) {
-                    v("f-camera").value = [make, model]
+                    // Remove redundant maker prefix (e.g. "Apple iPhone 17 Pro" → "iPhone 17 Pro")
+                    const fullCamera = [make, model]
                         .filter(Boolean)
                         .join(" ")
                         .trim();
+                    const makePrefix = make
+                        ? new RegExp(`^${make}\\s+`, "i")
+                        : null;
+                    v("f-camera").value = makePrefix
+                        ? fullCamera.replace(makePrefix, "").trim()
+                        : fullCamera;
                     found = true;
                 }
 
@@ -805,7 +812,14 @@ import Layout from "../layouts/Layout.astro";
                     exif.focalLengthIn35mmFormat;
 
                 if (lensModel) {
-                    v("f-lens").value = lensModel.trim();
+                    // For long iPhone-style strings like "Apple iPhone 17 Pro back dual wide camera 6.765mm f/1.78"
+                    // extract only the focal + aperture part at the end: "6.765mm f/1.78"
+                    const focalMatch = lensModel.match(
+                        /(\d+\.?\d*)mm\s+f\/(\d+\.?\d*)/
+                    );
+                    v("f-lens").value = focalMatch
+                        ? `${focalMatch[1]}mm f/${focalMatch[2]}`
+                        : lensModel.trim();
                     found = true;
                 } else if (fl35) {
                     const fn2 =
