@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Gerador EXIF | João Moreira" theme="dark">
-    <div class="max-w-5xl mx-auto w-full font-['Syne']">
+    <div class="max-w-5xl mx-auto w-full">
         <header
             class="mb-12 border-b border-zinc-800 pb-8 flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8"
         >
@@ -482,8 +482,7 @@ import Layout from "../layouts/Layout.astro";
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js" is:inline
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
 
     <script is:inline>
         (function initEXIFTool() {
