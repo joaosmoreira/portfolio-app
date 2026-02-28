@@ -78,9 +78,16 @@ const relatedPhotos = photos
                     class="md:col-span-2 border-t md:border-t-0 md:border-l border-zinc-200 pt-8 md:pt-0 md:pl-12 flex flex-col"
                 >
                     <h3
-                        class="font-semibold text-zinc-900 uppercase tracking-widest text-[11px] mb-6"
+                        class="font-semibold text-zinc-900 uppercase tracking-widest text-[11px] mb-6 flex items-center gap-2"
                     >
                         Detalhes Técnicos
+                        {
+                            photo.aiGenerated && (
+                                <span class="normal-case tracking-normal font-normal text-[9px] text-zinc-400 border border-zinc-200 rounded-full px-2 py-0.5 leading-none">
+                                    info gerada com IA
+                                </span>
+                            )
+                        }
                     </h3>
 
                     <div
