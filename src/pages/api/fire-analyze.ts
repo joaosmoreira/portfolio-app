@@ -10,6 +10,7 @@ export const POST: APIRoute = async ({ request }) => {
     try {
         const data = await request.json();
         const symbol = data.symbol || 'BTC-USD';
+        const isBasic = data.basic === true;
 
         // 1. Fetch real market data from Yahoo Finance
         const queryOptions = { period1: '2023-01-01', interval: '1wk' as const };
@@ -69,8 +70,15 @@ export const POST: APIRoute = async ({ request }) => {
             consensusSummarization: `O consenso no X indica ${sentimentType.toLowerCase()}, com traders a vigiar de perto os níveis atuais de suporte/resistência.`,
         };
 
-        // Generate mock Markers for chart
-        const markers = [];
+        const markers: any[] = [];
+
+        if (isBasic) {
+            return new Response(JSON.stringify({
+                success: true,
+                data: { symbol, currentPrice: price, change24h: change, chartData }
+            }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+
         if (historicalResult.length > 10) {
             // Buy marker a few days ago
             markers.push({

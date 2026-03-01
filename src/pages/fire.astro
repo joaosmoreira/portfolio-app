@@ -15,7 +15,8 @@ import {
 
 <Layout title="FIRE: Risk Engine & AI Sentiment | João Moreira" theme="dark">
     <div class="max-w-6xl mx-auto w-full font-['Inter']">
-        <header class="mb-10 pb-6 border-b border-zinc-800">
+        <header class="mb-8 pb-6 border-b border-zinc-800">
+            <!-- (keep existing header) -->
             <div class="flex items-center gap-4 mb-4">
                 <a
                     href="/portfolio"
@@ -37,6 +38,21 @@ import {
                 contexto social governado por IA.
             </p>
         </header>
+
+        <!-- Watchlist -->
+        <div class="mb-10">
+            <h2
+                class="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4"
+            >
+                Radar Global (Live)
+            </h2>
+            <div
+                id="watchlist-grid"
+                class="grid grid-cols-2 lg:grid-cols-5 gap-4"
+            >
+                <!-- Populated via JS -->
+            </div>
+        </div>
 
         <div class="mb-8 flex flex-col md:flex-row gap-4 items-end">
             <div class="w-full md:w-64">
@@ -268,7 +284,7 @@ import {
 
         chart = createChart(container, {
             layout: {
-                background: { type: "solid" as const, color: "#13151a" },
+                background: { type: "solid" as any, color: "#13151a" },
                 textColor: "#71717a", // zinc-500
             },
             grid: {
@@ -431,4 +447,97 @@ import {
         ?.addEventListener("keypress", (e) => {
             if (e.key === "Enter") analyzeContext();
         });
+
+    // Watchlist Logic
+    const watchlistSymbols = ["BTC-USD", "ETH-USD", "AAPL", "NVDA", "EURUSD=X"];
+
+    async function initWatchlist() {
+        const container = document.getElementById("watchlist-grid");
+        if (!container) return;
+
+        for (const sym of watchlistSymbols) {
+            const card = document.createElement("div");
+            card.className =
+                "relative overflow-hidden p-4 bg-zinc-900 border border-zinc-800 rounded-xl cursor-pointer hover:border-zinc-600 transition-colors flex flex-col justify-between h-28";
+            card.innerHTML = `<div class="flex justify-between items-start"><span class="font-bold text-white text-sm">${sym}</span><span class="text-xs text-zinc-500 animate-pulse">loading...</span></div>`;
+            container.appendChild(card);
+
+            try {
+                const res = await fetch("/api/fire-analyze", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ symbol: sym, basic: true }),
+                });
+                const payload = await res.json();
+                if (payload.success) {
+                    const { currentPrice, change24h, chartData } = payload.data;
+                    const changeNum = parseFloat(change24h);
+                    const isUp = changeNum > 0;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start z-10 relative">
+                            <span class="font-bold text-white text-sm">${sym}</span>
+                            <span class="text-xs font-semibold ${
+                                isUp ? "text-green-500" : "text-red-500"
+                            }">${isUp ? "+" : ""}${changeNum.toFixed(2)}%</span>
+                        </div>
+                        <div class="text-zinc-300 text-sm font-medium z-10 relative">$${currentPrice.toFixed(
+                            2
+                        )}</div>
+                        <div class="absolute inset-0 pt-10 opacity-40 pointer-events-none mini-chart-container"></div>
+                    `;
+                    card.onclick = () => {
+                        (
+                            document.getElementById(
+                                "symbol-input"
+                            ) as HTMLInputElement
+                        ).value = sym;
+                        analyzeContext();
+                        window.scrollTo({
+                            top:
+                                document.getElementById("symbol-input")
+                                    ?.offsetTop || 0 - 100,
+                            behavior: "smooth",
+                        });
+                    };
+
+                    const chartContainer = card.querySelector(
+                        ".mini-chart-container"
+                    ) as HTMLElement;
+                    const mChart = createChart(chartContainer, {
+                        layout: {
+                            background: {
+                                type: "solid" as any,
+                                color: "transparent",
+                            },
+                            textColor: "transparent",
+                        },
+                        grid: {
+                            vertLines: { visible: false },
+                            horzLines: { visible: false },
+                        },
+                        timeScale: { visible: false },
+                        rightPriceScale: { visible: false },
+                        handleScroll: false,
+                        handleScale: false,
+                        crosshair: { mode: 2 },
+                    });
+                    const mSeries = mChart.addLineSeries({
+                        color: isUp ? "#22c55e" : "#ef4444",
+                        lineWidth: 2,
+                        crosshairMarkerVisible: false,
+                        priceLineVisible: false,
+                    });
+                    mSeries.setData(chartData);
+                    mChart.timeScale().fitContent();
+                } else {
+                    card.innerHTML = `<div class="flex justify-between items-start"><span class="font-bold text-white text-sm">${sym}</span><span class="text-xs text-red-500">Error</span></div>`;
+                }
+            } catch (e) {
+                card.innerHTML = `<div class="flex justify-between items-start"><span class="font-bold text-white text-sm">${sym}</span><span class="text-xs text-red-500">Failed</span></div>`;
+            }
+        }
+    }
+
+    initWatchlist();
 </script>
