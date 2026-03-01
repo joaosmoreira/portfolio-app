@@ -1234,9 +1234,14 @@ import Layout from "../layouts/Layout.astro";
                     shutterSpeed: v("f-shutter"),
                     iso: v("f-iso"),
                     focalLength: v("f-focal"),
+                    aiGenerated: true,
                 };
                 Object.keys(obj).forEach((k) => {
-                    if (Array.isArray(obj[k]) ? obj[k].length === 0 : !obj[k])
+                    if (
+                        Array.isArray(obj[k])
+                            ? obj[k].length === 0
+                            : obj[k] === "" || obj[k] == null
+                    )
                         delete obj[k];
                 });
 
@@ -1246,6 +1251,8 @@ import Layout from "../layouts/Layout.astro";
                         lines.push(
                             `  ${k}: [${v2.map((t) => `"${t}"`).join(", ")}],`
                         );
+                    else if (typeof v2 === "boolean")
+                        lines.push(`  ${k}: ${v2},`);
                     else lines.push(`  ${k}: "${v2}",`);
                 }
                 lines.push("},");
