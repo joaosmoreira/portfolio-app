@@ -102,4 +102,21 @@ export const photos: PhotoInfo[] = [
         focalLength: "7mm",
         aiGenerated: true,
     },
+    {
+        id: "pessoas-0979",
+        title: "Momento Contemplativo",
+        image: "/images/pessoas/IMG_0979.jpg",
+        alt: "Homem barbudo a beber de um copo, vestido com casaco de cabedal e camisa às riscas, em preto e branco.",
+        tags: ["pessoas", "quotidiano", "arquitetura", "monocromático"],
+        description: "A luz suave esculpe o perfil do homem num instante de quietude, enquanto ele saboreia um momento. A atmosfera monocromática realça a introspecção e a textura da cena.",
+        date: "21 Fev 2026",
+        location: "Aves, Portugal",
+        camera: "iPhone 17 Pro",
+        lens: "6.765mm f/1.78",
+        aperture: "f/1.7",
+        shutterSpeed: "1/160s",
+        iso: "100",
+        focalLength: "7mm",
+        aiGenerated: true,
+    }
 ];
